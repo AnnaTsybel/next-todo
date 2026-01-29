@@ -1,5 +1,6 @@
 'use client';
 
+import { useSignUp } from '@app/features/auth/hooks';
 import { useState } from 'react';
 
 export default function SignUpPage() {
@@ -8,35 +9,22 @@ export default function SignUpPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        setError('');
+    const { mutate: signUp, isPending } = useSignUp();
 
+    const handleSubmit = async () => {
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            console.log('Passwords do not match');
             return;
         }
 
-        setLoading(true);
-
-        try {
-            await fetch('/api/auth/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: firstName,
-                    surname: lastName,
-                    email,
-                    password,
-                }),
-            });
-        } finally {
-            setLoading(false);
-        }
-    }
+        await signUp({
+            name: firstName,
+            surname: lastName,
+            email,
+            password,
+        });
+    };
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -91,14 +79,12 @@ export default function SignUpPage() {
                     className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-black"
                 />
 
-                {error && <p className="text-sm text-red-600">{error}</p>}
-
                 <button
                     type="submit"
-                    disabled={loading}
+                    disabled={isPending}
                     className="w-full rounded-md bg-black py-2 text-white transition hover:bg-gray-800 disabled:opacity-50"
                 >
-                    {loading ? 'Creating...' : 'Sign up'}
+                    {isPending ? 'Creating...' : 'Sign up'}
                 </button>
 
                 <p className="text-center text-sm text-gray-500">

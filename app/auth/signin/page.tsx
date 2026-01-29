@@ -1,38 +1,25 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useSignIn } from '@/app/features/auth/hooks';
 import { useState } from 'react';
 
 export default function SignInPage() {
-    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        setLoading(true);
+    const { mutate: signIn, isPending } = useSignIn();
 
-        try {
-            await fetch('/api/auth/signin', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
-
-            router.push('/');
-        } finally {
-            setLoading(false);
-        }
-    }
+    const handleSubmit = async () => {
+        await signIn({
+            email,
+            password,
+        });
+    };
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-100">
-            <form
-                onSubmit={handleSubmit}
-                className="w-full max-w-sm space-y-4 rounded-xl bg-white p-6 shadow"
-            >
-                <h1 className="text-center text-2xl font-semibold">Create account</h1>
+            <form className="w-full max-w-sm space-y-4 rounded-xl bg-white p-6 shadow">
+                <h1 className="text-center text-2xl font-semibold">Login in account</h1>
 
                 <input
                     type="email"
@@ -53,16 +40,16 @@ export default function SignInPage() {
                 />
 
                 <button
-                    type="submit"
-                    disabled={loading}
+                    onClick={handleSubmit}
+                    type="button"
+                    disabled={isPending}
                     className="w-full rounded-md bg-black py-2 text-white transition hover:bg-gray-800 disabled:opacity-50"
                 >
-                    {loading ? 'Creating...' : 'Sign up'}
+                    {isPending ? 'logging in...' : 'Sign in'}
                 </button>
-
                 <p className="text-center text-sm text-gray-500">
-                    Already have an account?{' '}
-                    <a href="/sigin" className="text-black underline">
+                    Do not have an account?{' '}
+                    <a href="/signup" className="text-black underline">
                         Sign in
                     </a>
                 </p>
