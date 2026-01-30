@@ -4,8 +4,8 @@ import { useSignIn } from '@/app/features/auth/hooks';
 import { useState } from 'react';
 
 export default function SignInPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
     const { mutate: signIn, isPending } = useSignIn();
 
@@ -49,8 +49,8 @@ export default function SignInPage() {
                 </button>
                 <p className="text-center text-sm text-gray-500">
                     Do not have an account?{' '}
-                    <a href="/signup" className="text-black underline">
-                        Sign in
+                    <a href="/auth/signup" className="text-black underline">
+                        Sign up
                     </a>
                 </p>
             </form>

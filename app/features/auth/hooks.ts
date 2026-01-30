@@ -4,6 +4,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { authApi } from '@/app/features/auth/api';
 
+import { toast } from 'sonner';
+
 export const useSignIn = () => {
     return useMutation({
         mutationFn: authApi.signIn,
@@ -12,7 +14,7 @@ export const useSignIn = () => {
             window.location.href = '/';
         },
         onError: error => {
-            console.error('Sign in error:', error);
+            toast.error('Something went wrong in signing in!');
         },
     });
 };

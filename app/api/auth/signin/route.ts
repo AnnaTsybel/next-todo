@@ -6,13 +6,17 @@ import z from 'zod';
 import { SignJWT } from 'jose';
 import { JWT_SECRET } from '@/app/constants/common';
 import { cookies } from 'next/headers';
+import { ErrorMessages, ApiError, handleError } from '@/app/lib/errors';
 
 export const SignUpSchema = z.object({
-    email: z.string().nonempty('Email is required').email('Invalid email format'),
+    email: z
+        .string()
+        .nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD)
+        .email(ErrorMessages.VALIDATION.EMAIL_FORMAT),
     password: z
         .string()
-        .nonempty('Password is required')
-        .min(8, 'Password needs to be 8 symbols or more'),
+        .nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD)
+        .min(8, ErrorMessages.VALIDATION.INVALID_INPUT),
 });
 
 export async function POST(req: Request) {
@@ -24,15 +28,10 @@ export async function POST(req: Request) {
         if (parseResult.error) {
             const firstError = parseResult.error.issues[0];
 
-            return NextResponse.json({ error: firstError.message }, { status: 400 });
+            throw new ApiError(firstError.message, 400);
         }
 
-        if (!JWT_SECRET) {
-            return NextResponse.json(
-                { ok: false, error: 'Unexpected server error.' },
-                { status: 500 },
-            );
-        }
+        if (!JWT_SECRET) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
 
         const { email, password } = parseResult.data;
 
@@ -42,25 +41,12 @@ export async function POST(req: Request) {
             .eq('email', email)
             .maybeSingle();
 
-        if (existingErr) {
-            return NextResponse.json(
-                { ok: false, error: 'Unexpected server error.' },
-                { status: 500 },
-            );
-        }
-
-        if (!existing) {
-            return NextResponse.json(
-                { ok: false, error: 'This user does not exist.' },
-                { status: 400 },
-            );
-        }
+        if (existingErr) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
+        if (!existing) throw new ApiError(ErrorMessages.AUTH.USER_NOT_EXIST, 400);
 
         const isValidPassword = await bcrypt.compare(password, existing.password_hash);
 
-        if (!isValidPassword) {
-            return NextResponse.json({ ok: false, error: 'Invalid password.' }, { status: 400 });
-        }
+        if (!isValidPassword) throw new ApiError(ErrorMessages.AUTH.INVALID_PASSWORD, 400);
 
         const { error: insertErr, data: user } = await supabaseSrv
             .from('users')
@@ -68,16 +54,8 @@ export async function POST(req: Request) {
             .eq('id', existing.id)
             .maybeSingle();
 
-        if (insertErr) {
-            return NextResponse.json(
-                { ok: false, error: 'Unexpected server error.' },
-                { status: 500 },
-            );
-        }
-
-        if (!user) {
-            return NextResponse.json({ ok: false, error: 'No user.' }, { status: 400 });
-        }
+        if (insertErr) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
+        if (!user) throw new ApiError(ErrorMessages.AUTH.USER_NOT_EXIST, 400);
 
         const token = await new SignJWT({ email, userId: user.id })
             .setProtectedHeader({ alg: 'HS256' })
@@ -93,7 +71,7 @@ export async function POST(req: Request) {
         });
 
         return NextResponse.json({ ok: true }, { status: 200 });
-    } catch {
-        return NextResponse.json({ ok: false, error: 'Unexpected server error.' }, { status: 500 });
+    } catch (error) {
+        return handleError(error);
     }
 }

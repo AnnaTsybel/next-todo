@@ -20,13 +20,6 @@ export async function middleware(request: NextRequest) {
     const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
     const isAuthPage = pathname.startsWith('/auth');
 
-    console.log('Middleware:', {
-        token,
-        pathname,
-        isPublicRoute,
-        isAuthPage,
-    });
-
     if (token) {
         const isValidToken = await verifyToken(token);
 
@@ -37,7 +30,6 @@ export async function middleware(request: NextRequest) {
         }
 
         if (isAuthPage) {
-            console.log('Valid token on auth page, redirecting to home');
             return NextResponse.redirect(new URL('/', request.url));
         }
 

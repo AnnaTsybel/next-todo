@@ -2,14 +2,21 @@ import { supabaseSrv } from '@/app/lib/supabase';
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import z from 'zod';
+import { ErrorMessages, ApiError, handleError } from '@/app/lib/errors';
 
 export const SignUpSchema = z.object({
-    name: z.string().nonempty('Name is required').min(1, 'Invalid user name'),
-    surname: z.string().nonempty('Surname is required').min(3, 'Invalid surname'),
-    email: z.string().nonempty('Email is required').email('Invalid email format'),
+    name: z
+        .string()
+        .nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD)
+        .min(1, ErrorMessages.VALIDATION.NAME_TOO_SHORT),
+    surname: z.string().nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD).min(3),
+    email: z
+        .string()
+        .nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD)
+        .email(ErrorMessages.VALIDATION.EMAIL_FORMAT),
     password: z
         .string()
-        .nonempty('Password is required')
+        .nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD)
         .min(8, 'Password needs to be 8 symbols or more'),
 });
 
@@ -22,7 +29,7 @@ export async function POST(req: Request) {
         if (parseResult.error) {
             const firstError = parseResult.error.issues[0];
 
-            return NextResponse.json({ error: firstError.message }, { status: 400 });
+            throw new ApiError(firstError.message, 400);
         }
 
         const { surname, name, email, password } = parseResult.data;
@@ -33,16 +40,8 @@ export async function POST(req: Request) {
             .eq('email', email)
             .maybeSingle();
 
-        if (existingErr) {
-            return NextResponse.json(
-                { ok: false, error: 'Unexpected server error.' },
-                { status: 400 },
-            );
-        }
-
-        if (existing) {
-            return NextResponse.json({ ok: false, error: 'User exists.' }, { status: 400 });
-        }
+        if (existingErr) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
+        if (existing) throw new ApiError(ErrorMessages.AUTH.USER_EXIST, 500);
 
         const passwordHash = await bcrypt.hash(password, 10);
 
@@ -55,15 +54,10 @@ export async function POST(req: Request) {
             },
         ]);
 
-        if (insertErr) {
-            return NextResponse.json(
-                { ok: false, error: 'Unexpected server error.' },
-                { status: 400 },
-            );
-        }
+        if (insertErr) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
 
         return NextResponse.json({ ok: true }, { status: 200 });
-    } catch {
-        return NextResponse.json({ ok: false, error: 'Unexpected server error.' }, { status: 500 });
+    } catch (error) {
+        return handleError(error);
     }
 }

@@ -1,0 +1,20 @@
+export const ErrorCodes = {
+    AUTH: {
+        UNAUTHORIZED: 'AUTH_UNAUTHORIZED',
+        INVALID_PASSWORD: 'AUTH_INVALID_PASSWORD',
+        USER_NOT_EXIST: 'AUTH_USER_NOT_EXIST',
+        USER_EXIST: 'AUTH_USER_EXIST',
+    },
+    VALIDATION: {
+        INVALID_INPUT: 'VALIDATION_INVALID_INPUT',
+    },
+    TODO: {
+        TODO_NO_ID: 'TODO_NO_ID',
+        NOT_FOUND: 'TODO_NOT_FOUND',
+        FORBIDDEN: 'TODO_FORBIDDEN',
+    },
+    COMMON: {
+        SERVER_ERROR: 'COMMON_SERVER_ERROR',
+        UNKNOWN: 'COMMON_UNKNOWN_ERROR',
+    },
+} as const;

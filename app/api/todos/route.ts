@@ -1,23 +1,31 @@
 import { getUserIdFromCookies } from '@/app/lib/auth';
+import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
 import { supabaseSrv } from '@/app/lib/supabase';
 import { NextResponse } from 'next/server';
 import z from 'zod';
 
 export const CreateTodoSchema = z.object({
-    title: z.string(),
-    description: z.string(),
-    expired_at: z.string(),
-    status: z.string(),
-    type: z.string(),
+    title: z
+        .string()
+        .nonempty('Title is required')
+        .max(100, 'Title must be at most 100 characters'),
+    description: z
+        .string()
+        .nonempty('Description is required')
+        .max(500, 'Description must be at most 500 characters'),
+    expired_at: z
+        .string()
+        .nonempty('Expiration date is required')
+        .refine(val => !isNaN(Date.parse(val)), 'Invalid date format'),
+    status: z.enum(['todo', 'in_progress', 'done'], 'Invalid status'),
+    type: z.enum(['task', 'bug', 'feature'], 'Invalid type'),
 });
 
 export async function POST(req: Request) {
     try {
         const userId = await getUserIdFromCookies();
 
-        if (!userId) {
-            return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
-        }
+        if (!userId) throw new ApiError(ErrorMessages.AUTH.UNAUTHORIZED, 401);
 
         const body = await req.json();
 
@@ -26,7 +34,7 @@ export async function POST(req: Request) {
         if (parseResult.error) {
             const firstError = parseResult.error.issues[0];
 
-            return NextResponse.json({ error: firstError.message }, { status: 400 });
+            throw new ApiError(firstError.message, 400);
         }
 
         const { title, description, expired_at, status, type } = parseResult.data;
@@ -42,17 +50,11 @@ export async function POST(req: Request) {
             },
         ]);
 
-        if (insertErr) {
-            console.log(insertErr);
-            return NextResponse.json(
-                { ok: false, error: 'Unexpected server error.' },
-                { status: 400 },
-            );
-        }
+        if (insertErr) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
 
         return NextResponse.json({ ok: true }, { status: 200 });
-    } catch {
-        return NextResponse.json({ ok: false, error: 'Unexpected server error.' }, { status: 500 });
+    } catch (error) {
+        return handleError(error);
     }
 }
 
@@ -60,24 +62,17 @@ export async function GET() {
     try {
         const userId = await getUserIdFromCookies();
 
-        if (!userId) {
-            return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
-        }
+        if (!userId) throw new ApiError(ErrorMessages.AUTH.UNAUTHORIZED, 401);
 
         const { error: selectError, data: todos } = await supabaseSrv
             .from('todos')
             .select('*')
             .eq('user_id', userId);
 
-        if (selectError) {
-            return NextResponse.json(
-                { ok: false, error: 'Unexpected server error.' },
-                { status: 500 },
-            );
-        }
+        if (selectError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
 
         return NextResponse.json({ ok: true, data: todos }, { status: 200 });
-    } catch {
-        return NextResponse.json({ ok: false, error: 'Unexpected server error.' }, { status: 500 });
+    } catch (error) {
+        return handleError(error);
     }
 }

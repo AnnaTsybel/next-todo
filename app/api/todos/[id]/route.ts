@@ -1,4 +1,5 @@
 import { getUserIdFromCookies } from '@/app/lib/auth';
+import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
 import { supabaseSrv } from '@/app/lib/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 import z from 'zod';
@@ -7,32 +8,20 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     try {
         const userId = await getUserIdFromCookies();
 
-        if (!userId) {
-            return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
-        }
+        if (!userId) throw new ApiError(ErrorMessages.AUTH.UNAUTHORIZED, 401);
 
         const { id } = await params;
         const todoId = Number(id);
 
-        if (!todoId) {
-            return NextResponse.json(
-                { ok: false, error: 'Not provided todo id.' },
-                { status: 400 },
-            );
-        }
+        if (!todoId) throw new ApiError(ErrorMessages.TODO.TODO_NO_ID, 400);
 
         const { error: deleteError } = await supabaseSrv.from('todos').delete().eq('id', todoId);
 
-        if (deleteError) {
-            return NextResponse.json(
-                { ok: false, error: 'Unexpected server error.' },
-                { status: 500 },
-            );
-        }
+        if (deleteError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
 
         return NextResponse.json({ ok: true }, { status: 200 });
-    } catch {
-        return NextResponse.json({ ok: false, error: 'Unexpected server error.' }, { status: 500 });
+    } catch (error) {
+        handleError(error);
     }
 }
 
@@ -40,63 +29,47 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     try {
         const userId = await getUserIdFromCookies();
 
-        if (!userId) {
-            return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
-        }
+        if (!userId) throw new ApiError(ErrorMessages.AUTH.UNAUTHORIZED, 401);
 
         const { id } = await params;
         const todoId = Number(id);
 
-        if (!todoId) {
-            return NextResponse.json(
-                { ok: false, error: 'Not provided todo id.' },
-                { status: 400 },
-            );
-        }
+        if (!todoId) throw new ApiError(ErrorMessages.TODO.TODO_NO_ID, 400);
 
         const { error: selectError, data: todo } = await supabaseSrv
             .from('todos')
             .select()
             .eq('id', todoId);
 
-        if (selectError) {
-            return NextResponse.json(
-                { ok: false, error: 'Unexpected server error.' },
-                { status: 500 },
-            );
-        }
+        if (selectError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
 
         return NextResponse.json({ ok: true, data: todo }, { status: 200 });
-    } catch {
-        return NextResponse.json({ ok: false, error: 'Unexpected server error.' }, { status: 500 });
+    } catch (error) {
+        return handleError(error);
     }
 }
 
 export const UpdateTodoSchema = z.object({
-    title: z.string(),
-    description: z.string(),
-    expired_at: z.string(),
-    status: z.string(),
-    type: z.string(),
+    title: z.string().max(100, 'Title must be at most 100 characters').optional(),
+    description: z.string().max(500, 'Description must be at most 500 characters').optional(),
+    expired_at: z
+        .string()
+        .refine(val => !val || !isNaN(Date.parse(val)), 'Invalid date format')
+        .optional(),
+    status: z.enum(['todo', 'in_progress', 'done']).optional(),
+    type: z.enum(['task', 'bug', 'feature']).optional(),
 });
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const userId = await getUserIdFromCookies();
 
-        if (!userId) {
-            return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
-        }
+        if (!userId) throw new ApiError(ErrorMessages.AUTH.UNAUTHORIZED, 401);
 
         const { id } = await params;
         const todoId = Number(id);
 
-        if (!todoId) {
-            return NextResponse.json(
-                { ok: false, error: 'Not provided todo id.' },
-                { status: 400 },
-            );
-        }
+        if (!todoId) if (!todoId) throw new ApiError(ErrorMessages.TODO.TODO_NO_ID, 400);
 
         const body = await req.json();
 
@@ -105,7 +78,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         if (parseResult.error) {
             const firstError = parseResult.error.issues[0];
 
-            return NextResponse.json({ error: firstError.message }, { status: 400 });
+            throw new ApiError(firstError.message, 400);
         }
 
         const { error: updateError } = await supabaseSrv
@@ -115,15 +88,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
             })
             .eq('id', todoId);
 
-        if (updateError) {
-            return NextResponse.json(
-                { ok: false, error: 'Unexpected server error.' },
-                { status: 500 },
-            );
-        }
+        if (updateError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
 
         return NextResponse.json({ ok: true }, { status: 200 });
-    } catch {
-        return NextResponse.json({ ok: false, error: 'Unexpected server error.' }, { status: 500 });
+    } catch (error) {
+        return handleError(error);
     }
 }

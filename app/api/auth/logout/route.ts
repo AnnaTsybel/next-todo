@@ -1,3 +1,4 @@
+import { handleError } from '@/app/lib/errors';
 import { NextResponse } from 'next/server';
 
 export async function POST() {
@@ -7,7 +8,7 @@ export async function POST() {
         response.cookies.delete('token');
 
         return response;
-    } catch {
-        return NextResponse.json({ ok: false, error: 'Unexpected server error.' }, { status: 500 });
+    } catch (error) {
+        return handleError(error);
     }
 }
