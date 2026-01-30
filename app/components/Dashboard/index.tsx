@@ -12,7 +12,7 @@ export function DashBoard() {
         mutateCreateTodo({
             title: 'Todo',
             description: 'Description',
-            type: 'default',
+            type: 'task',
             expired_at: new Date(),
             status: 'todo',
         });

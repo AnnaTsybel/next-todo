@@ -28,10 +28,7 @@ export default function SignUpPage() {
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-100">
-            <form
-                onSubmit={handleSubmit}
-                className="w-full max-w-sm space-y-4 rounded-xl bg-white p-6 shadow"
-            >
+            <form className="w-full max-w-sm space-y-4 rounded-xl bg-white p-6 shadow">
                 <h1 className="text-center text-2xl font-semibold">Create account</h1>
 
                 <input
@@ -80,9 +77,10 @@ export default function SignUpPage() {
                 />
 
                 <button
-                    type="submit"
+                    type="button"
                     disabled={isPending}
                     className="w-full rounded-md bg-black py-2 text-white transition hover:bg-gray-800 disabled:opacity-50"
+                    onClick={handleSubmit}
                 >
                     {isPending ? 'Creating...' : 'Sign up'}
                 </button>

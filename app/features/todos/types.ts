@@ -1,5 +1,5 @@
 export type TodoStatus = 'todo' | 'in_progress' | 'done';
-export type TodoType = 'default' | 'sport' | 'education';
+export type TodoType = 'default' | 'sport' | 'education' | 'task';
 
 export interface Todo {
     id: string;

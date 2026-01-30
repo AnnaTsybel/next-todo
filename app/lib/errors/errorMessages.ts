@@ -34,4 +34,12 @@ export const ErrorMessages = {
         FORBIDDEN: 'Forbidden',
         CONFLICT: 'Conflict',
     },
+    USER: {
+        AVATAR: {
+            SIZE: 'File size must be less than 2MB',
+            INVALID_TYPE: 'Invalid file type. Only JPEG, PNG, and WebP are allowed',
+            NO_IMAGE: 'Avatar file is required',
+            NO_DELETE_IMAGE: 'No avatar to delete',
+        },
+    },
 } as const;
