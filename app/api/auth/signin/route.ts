@@ -7,23 +7,13 @@ import { SignJWT } from 'jose';
 import { JWT_SECRET } from '@/app/constants/common';
 import { cookies } from 'next/headers';
 import { ErrorMessages, ApiError, handleError } from '@/app/lib/errors';
-
-export const SignUpSchema = z.object({
-    email: z
-        .string()
-        .nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD)
-        .email(ErrorMessages.VALIDATION.EMAIL_FORMAT),
-    password: z
-        .string()
-        .nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD)
-        .min(8, ErrorMessages.VALIDATION.INVALID_INPUT),
-});
+import { signInSchema } from '@/app/features/auth/validation';
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
 
-        const parseResult = SignUpSchema.safeParse(body);
+        const parseResult = signInSchema.safeParse(body);
 
         if (parseResult.error) {
             const firstError = parseResult.error.issues[0];

@@ -4,6 +4,7 @@ import { useProfile } from '@/app/features/users/hooks';
 import { useState } from 'react';
 import ProfileView from '@/app/components/Profile/View';
 import ProfileEdit from '@/app/components/Profile/Edit';
+import LavaLamp from '@/app/components/ui/Lavalamp';
 
 export default function ProfilePage() {
     const { data: profile, isLoading, isError } = useProfile();
@@ -27,6 +28,7 @@ export default function ProfilePage() {
 
     return (
         <>
+            <LavaLamp />
             {isEditing ? (
                 <ProfileEdit
                     profile={profile}

@@ -1,93 +1,92 @@
 'use client';
 
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useSignUp } from '@app/features/auth/hooks';
-import { useState } from 'react';
+import {
+    SignUpFormData,
+    SignUpFrontFormData,
+    signUpFrontSchema,
+    signUpSchema,
+} from '@app/features/auth/validation';
+import { FormInput } from '@app/components/ui/FormInput';
 
 export default function SignUpPage() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-
     const { mutate: signUp, isPending } = useSignUp();
 
-    const handleSubmit = async () => {
-        if (password !== confirmPassword) {
-            console.log('Passwords do not match');
-            return;
-        }
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm<SignUpFrontFormData>({
+        resolver: zodResolver(signUpFrontSchema),
+        defaultValues: {
+            name: '',
+            surname: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+        mode: 'onBlur',
+    });
 
+    const onSubmit = async (data: SignUpFormData) => {
         await signUp({
-            name: firstName,
-            surname: lastName,
-            email,
-            password,
+            name: data.name,
+            surname: data.surname,
+            email: data.email,
+            password: data.password,
         });
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100">
-            <form className="w-full max-w-sm space-y-4 rounded-xl bg-white p-6 shadow">
+        <div className="flex min-h-screen items-center justify-center">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="w-full max-w-sm space-y-4 rounded-xl p-6 shadow bg-card"
+            >
                 <h1 className="text-center text-2xl font-semibold">Create account</h1>
-
-                <input
-                    type="text"
+                <FormInput
                     placeholder="First name"
-                    required
-                    value={firstName}
-                    onChange={e => setFirstName(e.target.value)}
-                    className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-black"
+                    register={register('name')}
+                    error={errors.name}
                 />
-
-                <input
-                    type="text"
+                <FormInput
                     placeholder="Last name"
-                    required
-                    value={lastName}
-                    onChange={e => setLastName(e.target.value)}
-                    className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-black"
+                    register={register('surname')}
+                    error={errors.surname}
                 />
-
-                <input
-                    type="email"
+                <FormInput
                     placeholder="Email"
-                    required
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-black"
+                    type="email"
+                    register={register('email')}
+                    error={errors.email}
                 />
-
-                <input
-                    type="password"
+                <FormInput
                     placeholder="Password"
-                    required
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-black"
-                />
-
-                <input
                     type="password"
-                    placeholder="Confirm password"
-                    required
-                    value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)}
-                    className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-black"
+                    register={register('password')}
+                    error={errors.password}
+                    showPasswordToggle
                 />
-
+                <FormInput
+                    placeholder="Confirm password"
+                    type="password"
+                    register={register('confirmPassword')}
+                    error={errors.confirmPassword}
+                    showPasswordToggle
+                />
                 <button
-                    type="button"
-                    disabled={isPending}
-                    className="w-full rounded-md bg-black py-2 text-white transition hover:bg-gray-800 disabled:opacity-50"
-                    onClick={handleSubmit}
+                    type="submit"
+                    disabled={isSubmitting || isPending}
+                    className="w-40 mx-auto flex justify-center rounded-md py-2 text-button font-semibold transition disabled:opacity-50 cursor-pointer bg-accent"
                 >
-                    {isPending ? 'Creating...' : 'Sign up'}
+                    {isSubmitting || isPending ? 'Creating...' : 'Sign up'}
                 </button>
 
                 <p className="text-center text-sm text-gray-500">
                     Already have an account?{' '}
-                    <a href="/auth/signin" className="text-black underline">
+                    <a href="/auth/signin" className="text-foreground underline">
                         Sign in
                     </a>
                 </p>

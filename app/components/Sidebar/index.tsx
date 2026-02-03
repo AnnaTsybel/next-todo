@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { sidebarRoutes } from './routes';
 import { useLogout } from '@/app/features/auth/hooks';
 import { LogOut } from 'lucide-react';
+import { ThemeToggler } from '../ThemeToggler';
 
 export function Sidebar() {
     const pathname = usePathname();
@@ -16,8 +17,8 @@ export function Sidebar() {
     };
 
     return (
-        <aside className="flex h-screen w-64 flex-col border-r bg-background px-4 py-6">
-            <div className="mb-8 text-lg font-bold">My App</div>
+        <aside className="flex h-screen w-64 flex-col bg-card px-4 py-6 z-10 shadow">
+            <div className="mb-8 text-lg font-bold">Todo App</div>
             <nav className="flex flex-col gap-1">
                 {sidebarRoutes.map(route => {
                     const isActive =
@@ -40,13 +41,16 @@ export function Sidebar() {
                 })}
             </nav>
 
-            <button
-                onClick={handleLogout}
-                className="mt-auto flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm hover:text-white transition-colors cursor-pointer"
-            >
-                <LogOut className="h-4 w-4" />
-                Logout
-            </button>
+            <div className="mt-auto flex-col w-full items-center ">
+                <ThemeToggler />
+                <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm hover:bg-accent transition-colors cursor-pointer"
+                >
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                </button>
+            </div>
         </aside>
     );
 }

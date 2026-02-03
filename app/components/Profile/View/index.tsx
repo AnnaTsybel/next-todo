@@ -6,8 +6,8 @@ export default function ProfileView({ profile, onEdit }: { profile: User; onEdit
     const { mutateAsync: uploadAvatar } = useUploadAvatar();
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 text-zinc-100">
-            <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+        <div className="relative flex min-h-screen items-center justify-center px-4 z-10">
+            <div className="w-full max-w-md p-6 rounded-2xl shadow bg-card">
                 <div className="flex justify-center">
                     <Avatar
                         name={profile.name}
@@ -28,11 +28,10 @@ export default function ProfileView({ profile, onEdit }: { profile: User; onEdit
                     <Info label="Surname" value={profile.surname} />
                     <Info label="Email" value={profile.email} />
                 </div>
-
                 <div className="mt-6">
                     <button
                         onClick={onEdit}
-                        className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm hover:bg-blue-500"
+                        className="w-full rounded-lg px-4 py-2 text-md bg-accent text-button font-semibold cursor-pointer"
                     >
                         Edit profile
                     </button>

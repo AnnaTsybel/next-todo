@@ -3,28 +3,13 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import z from 'zod';
 import { ErrorMessages, ApiError, handleError } from '@/app/lib/errors';
-
-export const SignUpSchema = z.object({
-    name: z
-        .string()
-        .nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD)
-        .min(1, ErrorMessages.VALIDATION.NAME_TOO_SHORT),
-    surname: z.string().nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD).min(3),
-    email: z
-        .string()
-        .nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD)
-        .email(ErrorMessages.VALIDATION.EMAIL_FORMAT),
-    password: z
-        .string()
-        .nonempty(ErrorMessages.VALIDATION.REQUIRED_FIELD)
-        .min(8, 'Password needs to be 8 symbols or more'),
-});
+import { signUpSchema } from '@/app/features/auth/validation';
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
 
-        const parseResult = SignUpSchema.safeParse(body);
+        const parseResult = signUpSchema.safeParse(body);
 
         if (parseResult.error) {
             const firstError = parseResult.error.issues[0];
