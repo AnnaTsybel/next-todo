@@ -60,7 +60,7 @@ export const UpdateTodoSchema = z.object({
     type: z.enum(['task', 'bug', 'feature']).optional(),
 });
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const userId = await getUserIdFromCookies();
 
@@ -85,6 +85,48 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
             .from('todos')
             .update({
                 parseResult,
+            })
+            .eq('id', todoId);
+
+        if (updateError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
+
+        return NextResponse.json({ ok: true }, { status: 200 });
+    } catch (error) {
+        return handleError(error);
+    }
+}
+
+export const UpdateTodoStatusSchema = z.object({
+    status: z.enum(['todo', 'in_progress', 'done']).optional(),
+});
+
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    try {
+        const userId = await getUserIdFromCookies();
+
+        if (!userId) throw new ApiError(ErrorMessages.AUTH.UNAUTHORIZED, 401);
+
+        const { id } = await params;
+        const todoId = Number(id);
+
+        if (!todoId) if (!todoId) throw new ApiError(ErrorMessages.TODO.TODO_NO_ID, 400);
+
+        const body = await req.json();
+
+        const parseResult = UpdateTodoStatusSchema.safeParse(body);
+
+        if (parseResult.error) {
+            const firstError = parseResult.error.issues[0];
+
+            throw new ApiError(firstError.message, 400);
+        }
+
+        const { status } = parseResult.data;
+
+        const { error: updateError } = await supabaseSrv
+            .from('todos')
+            .update({
+                status,
             })
             .eq('id', todoId);
 

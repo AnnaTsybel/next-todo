@@ -1,3 +1,4 @@
+import { Todo, TodoStatus } from '@/app/features/todos/types';
 import { getUserIdFromCookies } from '@/app/lib/auth';
 import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
 import { supabaseSrv } from '@/app/lib/supabase';
@@ -61,17 +62,26 @@ export async function POST(req: Request) {
 export async function GET() {
     try {
         const userId = await getUserIdFromCookies();
-
         if (!userId) throw new ApiError(ErrorMessages.AUTH.UNAUTHORIZED, 401);
 
-        const { error: selectError, data: todos } = await supabaseSrv
-            .from('todos')
-            .select('*')
-            .eq('user_id', userId);
+        const { data, error } = await supabaseSrv.from('todos').select('*').eq('user_id', userId);
 
-        if (selectError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
+        if (error) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
 
-        return NextResponse.json({ ok: true, data: todos }, { status: 200 });
+        const groupedTodos: Record<TodoStatus, Todo[]> = {
+            todo: [],
+            in_progress: [],
+            done: [],
+        };
+
+        data?.forEach(todo => {
+            groupedTodos[todo.status as TodoStatus]?.push(todo);
+        });
+
+        return NextResponse.json(
+            { ok: true, data: { todos: groupedTodos, length: data.length } },
+            { status: 200 },
+        );
     } catch (error) {
         return handleError(error);
     }

@@ -48,6 +48,21 @@ export const useUpdateTodo = () => {
     });
 };
 
+export const useUpdateTodoStatus = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: todosApi.updateTodoStatus,
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: ['GET_TODOS'] });
+            queryClient.invalidateQueries({ queryKey: ['GET_TODO_BY_ID', variables.id] });
+        },
+        onError: error => {
+            console.error('Update todo error:', error);
+        },
+    });
+};
+
 export const useDeleteTodo = () => {
     const queryClient = useQueryClient();
 

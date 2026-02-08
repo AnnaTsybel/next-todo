@@ -1,7 +1,7 @@
 'use client';
 
-import { TodoItem } from '../TodoItem';
 import { useCreateTodo, useGetTodos } from '@/app/features/todos/hooks';
+import { DashBoardContent } from './Content';
 
 export function DashBoard() {
     const { data: todos } = useGetTodos();
@@ -18,19 +18,14 @@ export function DashBoard() {
         });
     };
 
-    return todos && todos.length > 0 ? (
+    return (
         <div>
             <button onClick={createTodo}>Create todo</button>
-            <div>
-                {todos.map(todo => (
-                    <TodoItem key={todo.id} todo={todo} />
-                ))}
-            </div>
-        </div>
-    ) : (
-        <div>
-            <p>No todos</p>
-            <button onClick={createTodo}>Create todo</button>
+            {todos && todos.length > 0 ? (
+                <DashBoardContent todosData={todos.todos} />
+            ) : (
+                <p>No todos</p>
+            )}
         </div>
     );
 }

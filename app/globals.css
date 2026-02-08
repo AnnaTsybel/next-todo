@@ -22,6 +22,20 @@
         --text-button: #ebebeb;
         --text-foreground: #0d0d0d;
         --shadow-accent: 0 0 40px rgba(221, 119, 119, 0.6);
+        --color-edit: #6b7280;
+        --color-edit-hover: #9ca3af;
+
+        --color-danger: #e16960;
+        --color-danger-hover: #ff7a72;
+
+        --todo-bg-hover: rgba(0, 0, 0, 0.04);
+
+        --todo-text: var(--text-foreground);
+        --todo-muted: rgba(0, 0, 0, 0.55);
+
+        --todo-expired-bg: rgba(225, 105, 96, 0.08);
+
+        --bg-card-secondary: #d5d5d5;
     }
 
     .dark {
@@ -35,6 +49,18 @@
         --text-button: #fbfbfb;
         --text-foreground: #ededed;
         --shadow-accent: 0 0 40px rgba(173, 85, 85, 0.25);
+        --color-edit: #a1a1aa;
+        --color-edit-hover: #e5e7eb;
+
+        --color-danger: #ff6b6b;
+        --color-danger-hover: #ff8a8a;
+
+        --todo-bg-hover: rgba(255, 255, 255, 0.05);
+        --todo-muted: rgba(255, 255, 255, 0.55);
+
+        --todo-expired-bg: rgba(255, 107, 107, 0.12);
+
+        --bg-card-secondary: #242424;
     }
 }
 
@@ -56,6 +82,43 @@
     }
     .text-foreground {
         color: var(--text-foreground);
+    }
+    .text-edit {
+        color: var(--color-edit);
+    }
+
+    .hover-text-edit:hover {
+        color: var(--color-edit-hover);
+    }
+
+    .text-danger {
+        color: var(--color-danger);
+    }
+
+    .hover-text-danger:hover {
+        color: var(--color-danger-hover);
+    }
+
+    .hover-bg-danger:hover {
+        background-color: color-mix(in srgb, var(--color-danger) 20%, transparent);
+    }
+
+    .todo-hover:hover {
+        background-color: var(--todo-bg-hover);
+    }
+
+    .todo-text {
+        color: var(--todo-text);
+    }
+    .todo-muted {
+        color: var(--todo-muted);
+    }
+
+    .todo-expired {
+        background-color: var(--todo-expired-bg);
+    }
+    .bg-card-secondary {
+        background-color: var(--bg-card-secondary);
     }
 }
 

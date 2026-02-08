@@ -1,10 +1,14 @@
-// api/todos.ts or features/todos/api/todos.ts
-
 import { axiosInstance } from '@/app/lib/axios-client';
-import { CreateTodoData, Todo, TodoStatus, UpdateTodoData } from '@/app/features/todos/types';
+import {
+    CreateTodoData,
+    Todo,
+    TodosResponse,
+    UpdateTodoData,
+    UpdateTodoStatusVariables,
+} from '@/app/features/todos/types';
 
 export const todosApi = {
-    getTodos: async (): Promise<Todo[]> => {
+    getTodos: async (): Promise<TodosResponse> => {
         return axiosInstance.get('/api/todos');
     },
     getTodoById: async (id: string): Promise<Todo> => {
@@ -19,7 +23,7 @@ export const todosApi = {
     deleteTodo: async (id: string): Promise<void> => {
         return axiosInstance.delete(`/api/todos/${id}`);
     },
-    updateTodoStatus: async (id: string, status: TodoStatus): Promise<Todo[]> => {
-        return axiosInstance.patch(`/api/todos/${id}/status`, { status });
+    updateTodoStatus: async ({ id, status }: UpdateTodoStatusVariables): Promise<void> => {
+        return axiosInstance.patch(`/api/todos/${id}`, { status });
     },
 };

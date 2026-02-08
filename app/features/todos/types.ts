@@ -12,6 +12,12 @@ export interface Todo {
     updated_at?: Date | string;
 }
 
+export type TodosData = Record<TodoStatus, Todo[]>;
+export type TodosResponse = {
+    todos: TodosData;
+    length: number;
+};
+
 export interface CreateTodoData {
     title: string;
     description: string;
@@ -27,4 +33,9 @@ export interface UpdateTodoData extends Partial<CreateTodoData> {
 export interface GetTodosResponse {
     todos: Todo[];
     total?: number;
+}
+
+export interface UpdateTodoStatusVariables {
+    id: string;
+    status: TodoStatus;
 }
