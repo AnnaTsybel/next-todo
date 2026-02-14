@@ -2,9 +2,9 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { authApi } from '@/app/features/auth/api';
-
 import { toast } from 'sonner';
+
+import { authApi } from '@/app/features/auth/api';
 
 export const useSignIn = () => {
     return useMutation({
@@ -27,9 +27,6 @@ export const useSignUp = () => {
         onSuccess: _ => {
             router.push('/auth/signin');
         },
-        onError: error => {
-            console.error('Sign up error:', error);
-        },
     });
 };
 
@@ -39,12 +36,8 @@ export const useLogout = () => {
     return useMutation({
         mutationFn: authApi.logout,
         onSuccess: () => {
-            console.log('logged out');
             router.refresh();
             router.push('/auth/signin');
-        },
-        onError: error => {
-            console.error('Logout error:', error);
         },
     });
 };

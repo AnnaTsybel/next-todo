@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useCallback, useMemo, useEffect } from 'react';
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
+import { useEffect, useState } from 'react';
 
-import { Todo, TodoStatus } from '@app/features/todos/types';
-import { useUpdateTodoStatus } from '@app/features/todos/hooks';
+import { useUpdateTodoStatus } from '@features/todos/hooks';
+import { Todo, TodoStatus } from '@features/todos/types';
 
 export interface Column {
     id: TodoStatus;
@@ -61,6 +61,7 @@ export const useDragAndDrop = (initialColumns: Column[]) => {
             const newColumns = [...columns];
             newColumns[activeColIndex] = { ...activeCol, items: newItems };
             setColumns(newColumns);
+
             return;
         }
 
@@ -77,6 +78,7 @@ export const useDragAndDrop = (initialColumns: Column[]) => {
                     items: [...col.items, { ...movingItem, status: col.id }],
                 };
             }
+
             return col;
         });
 
@@ -89,6 +91,7 @@ export const useDragAndDrop = (initialColumns: Column[]) => {
             setColumns(columns);
         });
     };
+
     return {
         columns,
         setColumns,

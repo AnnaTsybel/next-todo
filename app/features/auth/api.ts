@@ -1,5 +1,5 @@
-import { axiosInstance } from '@/app/lib/axios-client';
 import { SignInData, SignUpData } from '@/app/features/auth/types';
+import { axiosInstance } from '@/app/lib/axios-client';
 
 export const authApi = {
     signIn: async (data: SignInData): Promise<void> => {

@@ -1,26 +1,10 @@
+import { NextResponse } from 'next/server';
+
 import { Todo, TodoStatus } from '@/app/features/todos/types';
+import { CreateTodoSchema } from '@/app/features/todos/validation';
 import { getUserIdFromCookies } from '@/app/lib/auth';
 import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
 import { supabaseSrv } from '@/app/lib/supabase';
-import { NextResponse } from 'next/server';
-import z from 'zod';
-
-export const CreateTodoSchema = z.object({
-    title: z
-        .string()
-        .nonempty('Title is required')
-        .max(100, 'Title must be at most 100 characters'),
-    description: z
-        .string()
-        .nonempty('Description is required')
-        .max(500, 'Description must be at most 500 characters'),
-    expired_at: z
-        .string()
-        .nonempty('Expiration date is required')
-        .refine(val => !isNaN(Date.parse(val)), 'Invalid date format'),
-    status: z.enum(['todo', 'in_progress', 'done'], 'Invalid status'),
-    type: z.enum(['task', 'bug', 'feature'], 'Invalid type'),
-});
 
 export async function POST(req: Request) {
     try {
@@ -74,9 +58,10 @@ export async function GET() {
             done: [],
         };
 
-        data?.forEach(todo => {
-            groupedTodos[todo.status as TodoStatus]?.push(todo);
-        });
+        if (data)
+            for (const todo of data) {
+                groupedTodos[todo.status as TodoStatus]?.push(todo);
+            }
 
         return NextResponse.json(
             { ok: true, data: { todos: groupedTodos, length: data.length } },

@@ -1,9 +1,10 @@
+import { NextRequest, NextResponse } from 'next/server';
+import z from 'zod';
+
 import { UpdateTodoSchema } from '@/app/features/todos/validation';
 import { getUserIdFromCookies } from '@/app/lib/auth';
 import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
 import { supabaseSrv } from '@/app/lib/supabase';
-import { NextRequest, NextResponse } from 'next/server';
-import z from 'zod';
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -60,7 +61,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         const { id } = await params;
         const todoId = Number(id);
 
-        if (!todoId) if (!todoId) throw new ApiError(ErrorMessages.TODO.TODO_NO_ID, 400);
+        if (!todoId && !todoId) throw new ApiError(ErrorMessages.TODO.TODO_NO_ID, 400);
 
         const body = await req.json();
 
@@ -100,7 +101,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         const { id } = await params;
         const todoId = Number(id);
 
-        if (!todoId) if (!todoId) throw new ApiError(ErrorMessages.TODO.TODO_NO_ID, 400);
+        if (!todoId && !todoId) throw new ApiError(ErrorMessages.TODO.TODO_NO_ID, 400);
 
         const body = await req.json();
 

@@ -1,5 +1,6 @@
-import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
+import { cookies } from 'next/headers';
+
 import { JWT_SECRET } from '../constants/common';
 
 /**
@@ -19,6 +20,7 @@ export async function getUserIdFromCookies(): Promise<string | null> {
         return payload.userId as string;
     } catch (error) {
         console.error('Invalid token:', error);
+
         return null;
     }
 }

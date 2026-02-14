@@ -1,6 +1,7 @@
-import { User } from '@/app/features/users/types';
-import Avatar from '../../Avatar';
-import { useUploadAvatar } from '@/app/features/users/hooks';
+import { useUploadAvatar } from '@features/users/hooks';
+import { User } from '@features/users/types';
+
+import Avatar from '@components/ui/Avatar';
 
 export default function ProfileView({ profile, onEdit }: { profile: User; onEdit: () => void }) {
     const { mutateAsync: uploadAvatar } = useUploadAvatar();

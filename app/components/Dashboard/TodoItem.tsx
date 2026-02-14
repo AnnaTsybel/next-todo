@@ -1,10 +1,12 @@
 'use client';
 
-import { Trash, ArrowRight } from 'lucide-react';
+import { ArrowRight, Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useDeleteTodo } from '@/app/features/todos/hooks';
-import { Todo } from '@/app/features/todos/types';
-import { formatDate } from '@/app/utils/date';
+import { useMemo } from 'react';
+
+import { formatDate } from '@app/utils/date';
+import { useDeleteTodo } from '@features/todos/hooks';
+import { Todo } from '@features/todos/types';
 
 type TodoItemProps = {
     todo: Todo;
@@ -23,9 +25,12 @@ export function TodoItem({ todo }: TodoItemProps) {
         router.push(`/todos/${todo.id}`);
     };
 
-    const isExpiredAndNotDone = todo.expired_at
-        ? new Date(todo.expired_at).getTime() < new Date().getTime() && todo.status !== 'done'
-        : false;
+    const isExpiredAndNotDone = useMemo(() => {
+        if (!todo.expired_at) return false;
+
+        // eslint-disable-next-line react-hooks/purity
+        return new Date(todo.expired_at).getTime() < Date.now() && todo.status !== 'done';
+    }, [todo.expired_at, todo.status]);
 
     return (
         <article

@@ -1,31 +1,18 @@
 'use client';
 
-import { useCreateTodo, useGetTodos } from '@/app/features/todos/hooks';
-import { DashBoardContent } from './Content';
+import { useGetTodos } from '@features/todos/hooks';
+
+import { TodosList } from '@components/Dashboard/TodoList';
+import { Loader } from '@components/ui/Loader';
 
 export function DashBoard() {
-    const { data: todos } = useGetTodos();
-
-    const { mutateAsync: mutateCreateTodo } = useCreateTodo();
-
-    const createTodo = async () => {
-        mutateCreateTodo({
-            title: 'Todo',
-            description: 'Description',
-            type: 'task',
-            expired_at: new Date(),
-            status: 'todo',
-        });
-    };
+    const { data: todos, isLoading } = useGetTodos();
 
     return (
-        <div>
-            <button onClick={createTodo}>Create todo</button>
-            {todos && todos.length > 0 ? (
-                <DashBoardContent todosData={todos.todos} />
-            ) : (
-                <p>No todos</p>
-            )}
+        <div className="min-h-screen p-6">
+            <div className="max-w-7xl mx-auto">
+                {isLoading ? <Loader /> : <TodosList todos={todos} />}
+            </div>
         </div>
     );
 }

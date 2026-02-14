@@ -1,8 +1,9 @@
+import { NextRequest, NextResponse } from 'next/server';
+
 import { profileSchema } from '@/app/features/users/validation';
 import { getUserIdFromCookies } from '@/app/lib/auth';
 import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
 import { supabaseSrv } from '@/app/lib/supabase';
-import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
     try {

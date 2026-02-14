@@ -1,7 +1,8 @@
 'use client';
 
-import { TodoStatus } from '@/app/features/todos/types';
 import { useDroppable } from '@dnd-kit/core';
+
+import { TodoStatus } from '@features/todos/types';
 
 export const DroppableColumn = ({
     id,

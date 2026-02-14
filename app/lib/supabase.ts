@@ -1,4 +1,5 @@
 import 'server-only'; // optional but nice
+
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_HOST = process.env.SUPABASE_HOST!;

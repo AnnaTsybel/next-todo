@@ -22,7 +22,10 @@
             "@/*": ["./*"],
             "@app/*": ["./app/*"],
             "@components/*": ["./app/components/*"],
-            "@lib/*": ["./app/lib/*"]
+            "@lib/*": ["./app/lib/*"],
+            "@features/*": ["./app/features/*"],
+            "@constants/*": ["./app/constants/*"],
+            "@hooks/*": ["./app/hooks/*"]
         }
     },
     "include": [

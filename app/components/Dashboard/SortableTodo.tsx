@@ -1,7 +1,9 @@
-import { Todo } from '@/app/features/todos/types';
-import { TodoItem } from '.';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+
+import { Todo } from '@features/todos/types';
+
+import { TodoItem } from '@components/Dashboard/TodoItem';
 
 export const SortableTodo: React.FC<{ todo: Todo }> = ({ todo }) => {
     const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({

@@ -1,15 +1,15 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
+import { FormInput } from '@app/components/ui/FormInput';
 import { useSignUp } from '@app/features/auth/hooks';
 import {
     SignUpFormData,
     SignUpFrontFormData,
     signUpFrontSchema,
-    signUpSchema,
 } from '@app/features/auth/validation';
-import { FormInput } from '@app/components/ui/FormInput';
 
 export default function SignUpPage() {
     const { mutate: signUp, isPending } = useSignUp();

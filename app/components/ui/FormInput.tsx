@@ -1,8 +1,8 @@
 'use client';
 
-import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import { useState } from 'react';
+import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 
 interface FormInputProps {
     title?: string;
@@ -23,15 +23,14 @@ export const FormInput = ({
 }: FormInputProps) => {
     const [showPassword, setShowPassword] = useState(false);
     const isPassword = type === 'password';
+    const passwordInputType = showPassword ? 'text' : 'password';
 
     return (
         <div className="relative">
             {title && <label className="block font-semibold mb-1">{title}</label>}
             <input
                 {...register}
-                type={
-                    isPassword && showPasswordToggle ? (showPassword ? 'text' : 'password') : type
-                }
+                type={isPassword && showPasswordToggle ? passwordInputType : type}
                 placeholder={placeholder}
                 className="w-full rounded-md border px-3 py-2 pr-10 outline-none focus:ring-2 focus:ring-black"
             />

@@ -2,13 +2,16 @@
 
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useGetTodoById, useUpdateTodo } from '@/app/features/todos/hooks';
-import { FormInput } from '../ui/FormInput';
-import { CommonSelect, Option } from '@/app/components/ui/CommonSelect';
-import { UpdateTodoFormData } from '@/app/features/todos/validation';
-import { TodoStatus, TodoType } from '@/app/features/todos/types';
-import { CommonTextarea } from '../ui/CommonTextarea';
-import { DatePickerField } from '../ui/DatePickerField';
+
+import { useGetTodoById, useUpdateTodo } from '@features/todos/hooks';
+import { TodoStatus, TodoType } from '@features/todos/types';
+import { UpdateTodoFormData } from '@features/todos/validation';
+
+import { CommonSelect, Option } from '@components/ui/CommonSelect';
+import { CommonTextarea } from '@components/ui/CommonTextarea';
+import { DatePickerField } from '@components/ui/DatePickerField';
+import { FormInput } from '@components/ui/FormInput';
+import { Loader } from '@components/ui/Loader';
 
 type Props = {
     id: string;
@@ -65,7 +68,7 @@ export const TodoContent = ({ id }: Props) => {
         });
     };
 
-    if (isLoading || !todo) return <p>Loading...</p>;
+    if (isLoading || !todo) return <Loader />;
 
     return (
         <div className="relative flex min-h-screen items-center justify-center px-4 z-10">

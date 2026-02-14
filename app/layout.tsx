@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 
-import ClientProvider from '@app/components/wrappers/ClientWrapper';
 import { Toaster } from '@app/components/ui/Toaster';
+import ClientProvider from '@app/components/wrappers/ClientWrapper';
 import ThemeProvider from '@app/components/wrappers/ThemeProvider';
+
+import { Modal } from './components/ui/Modal';
+import { StoreProvider } from './components/wrappers/StoreProvider';
 
 import './globals.css';
 
@@ -21,7 +24,10 @@ export default async function RootLayout({
             <body className="antialiased">
                 <Toaster />
                 <ClientProvider>
-                    <ThemeProvider>{children}</ThemeProvider>
+                    <StoreProvider>
+                        <Modal />
+                        <ThemeProvider>{children}</ThemeProvider>
+                    </StoreProvider>
                 </ClientProvider>
             </body>
         </html>

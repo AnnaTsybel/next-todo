@@ -1,20 +1,22 @@
 'use client';
 
+import clsx from 'clsx';
+import { LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
-import { sidebarRoutes } from './routes';
-import { useLogout } from '@/app/features/auth/hooks';
-import { LogOut } from 'lucide-react';
-import { ThemeToggler } from '../ThemeToggler';
-import Avatar from '../Avatar';
-import { useProfile } from '@/app/features/users/hooks';
-import { SkeletonWrapper } from '../ui/SkeletonWrapper';
+
+import { useLogout } from '@features/auth/hooks';
+import { useProfile } from '@features/users/hooks';
+
+import { sidebarRoutes } from '@components/Sidebar/routes';
+import { ThemeToggler } from '@components/ThemeToggler';
+import Avatar from '@components/ui/Avatar';
+import { SkeletonWrapper } from '@components/ui/SkeletonWrapper';
 
 export function Sidebar() {
     const pathname = usePathname();
     const { mutate: logout } = useLogout();
-    const { data: profile, isLoading, isError } = useProfile();
+    const { data: profile, isLoading } = useProfile();
 
     const handleLogout = async () => {
         await logout();
@@ -27,7 +29,12 @@ export function Sidebar() {
                 className="flex items-center gap-3 cursor-pointer mb-[30px]"
                 title="Go to profile"
             >
-                <SkeletonWrapper isLoading={!profile} width={80} height={80} variant="circle">
+                <SkeletonWrapper
+                    isLoading={!profile || isLoading}
+                    width={80}
+                    height={80}
+                    variant="circle"
+                >
                     <Avatar
                         name={profile?.name ?? ''}
                         initialAvatar={profile?.avatar_url}
@@ -35,12 +42,12 @@ export function Sidebar() {
                     />
                 </SkeletonWrapper>
                 <div className="flex flex-col leading-tight">
-                    <SkeletonWrapper isLoading={!profile} width={120} height={18}>
+                    <SkeletonWrapper isLoading={!profile || isLoading} width={120} height={18}>
                         <span className="text-md font-semibold">
                             {profile?.name} {profile?.surname}
                         </span>
                     </SkeletonWrapper>
-                    <SkeletonWrapper isLoading={!profile} width={60} height={14}>
+                    <SkeletonWrapper isLoading={!profile || isLoading} width={60} height={14}>
                         <span className="text-md text-zinc-500">Profile</span>
                     </SkeletonWrapper>
                 </div>

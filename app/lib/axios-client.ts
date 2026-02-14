@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance, HttpStatusCode } from 'axios';
+import axios, { AxiosError, AxiosInstance } from 'axios';
 
 const errorHandler = <T>(error: AxiosError<T>): Promise<never> => Promise.reject(error);
 

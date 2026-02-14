@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { CustomSkeleton } from './Skeleton';
 
 export type SkeletonWrapperProps = {

@@ -1,7 +1,7 @@
 'use client';
 
-import { UseFormRegisterReturn } from 'react-hook-form';
 import { ChevronDown } from 'lucide-react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 export type Option<T = string> = {
     label: string;

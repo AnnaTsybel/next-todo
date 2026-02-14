@@ -1,13 +1,12 @@
-import { supabaseSrv } from '@/app/lib/supabase';
-
-import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import z from 'zod';
 import { SignJWT } from 'jose';
-import { JWT_SECRET } from '@/app/constants/common';
 import { cookies } from 'next/headers';
-import { ErrorMessages, ApiError, handleError } from '@/app/lib/errors';
+import { NextResponse } from 'next/server';
+
+import { JWT_SECRET } from '@/app/constants/common';
 import { signInSchema } from '@/app/features/auth/validation';
+import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
+import { supabaseSrv } from '@/app/lib/supabase';
 
 export async function POST(req: Request) {
     try {

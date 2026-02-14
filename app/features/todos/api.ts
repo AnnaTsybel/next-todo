@@ -1,4 +1,3 @@
-import { axiosInstance } from '@/app/lib/axios-client';
 import {
     CreateTodoData,
     Todo,
@@ -6,6 +5,7 @@ import {
     UpdateTodoData,
     UpdateTodoStatusVariables,
 } from '@/app/features/todos/types';
+import { axiosInstance } from '@/app/lib/axios-client';
 
 export const todosApi = {
     getTodos: async (): Promise<TodosResponse> => {

@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings, Calendar } from 'lucide-react';
+import { Calendar, LayoutDashboard, Settings } from 'lucide-react';
 
 export const sidebarRoutes = [
     {

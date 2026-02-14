@@ -10,13 +10,25 @@ export const UpdateTodoSchema = z.object({
     title: z.string().nonempty('Title is required').min(1, 'Title must be at least 1 character'),
     description: z.string().optional(),
     status: todoStatusSchema,
-    type: todoTypeSchema.optional(),
+    type: todoTypeSchema,
     expired_at: z
         .string()
         .optional()
-        .refine(val => val === undefined || !isNaN(Date.parse(val)), {
+        .refine(val => val === undefined || !Number.isNaN(Date.parse(val)), {
             message: 'Invalid date format',
         }),
 });
 
 export type UpdateTodoFormData = z.infer<typeof UpdateTodoSchema>;
+
+export const CreateTodoSchema = z.object({
+    title: z.string().nonempty('Title is required').min(1, 'Title must be at least 1 character'),
+    description: z.string().optional(),
+    status: todoStatusSchema,
+    type: todoTypeSchema,
+    expired_at: z.string().refine(val => val === undefined || !Number.isNaN(Date.parse(val)), {
+        message: 'Invalid date format',
+    }),
+});
+
+export type CreateTodoFormData = z.infer<typeof CreateTodoSchema>;

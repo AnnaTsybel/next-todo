@@ -1,11 +1,13 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useUpdateProfile } from '@/app/features/users/hooks';
-import { User, UpdateUserData } from '@/app/features/users/types';
-import { profileSchema, ProfileFormData } from '@/app/features/users/validation';
-import { FormInput } from '../../ui/FormInput';
+import { useForm } from 'react-hook-form';
+
+import { useUpdateProfile } from '@features/users/hooks';
+import { UpdateUserData, User } from '@features/users/types';
+import { ProfileFormData, profileSchema } from '@features/users/validation';
+
+import { FormInput } from '@components/ui/FormInput';
 
 export default function ProfileEdit({
     profile,

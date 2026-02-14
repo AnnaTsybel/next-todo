@@ -14,6 +14,7 @@ export const CustomSkeleton: React.FC<CustomSkeletonProps> = ({
     className = '',
 }) => {
     const shapeClass = variant === 'circle' ? 'rounded-full' : 'rounded-md';
+
     return (
         <div
             className={`bg-zinc-700 dark:bg-zinc-600 animate-pulse ${shapeClass} ${className}`}

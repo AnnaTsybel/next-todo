@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { Controller, FieldValues, Control, Path } from 'react-hook-form';
-import { DayPicker } from 'react-day-picker';
 import { ChevronDown, X } from 'lucide-react';
+import { useState } from 'react';
+import { DayPicker } from 'react-day-picker';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+
 import 'react-day-picker/dist/style.css';
 
 interface DatePickerFieldProps<T extends FieldValues> {
@@ -23,6 +24,7 @@ export const DatePickerField = <T extends FieldValues>({
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
+
         return `${year}-${month}-${day}`;
     };
 

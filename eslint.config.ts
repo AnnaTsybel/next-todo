@@ -10,7 +10,15 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
     {
-        ignores: ['dist', 'node_modules', 'src/tests'],
+        ignores: [
+            'dist/**',
+            'node_modules/**',
+            'src/tests/**',
+            '.next/**',
+            'out/**',
+            'build/**',
+            '.cache/**',
+        ],
     },
     {
         files: ['**/*.{ts,tsx}'],
@@ -45,18 +53,21 @@ export default tseslint.config(
                 {
                     groups: [
                         [String.raw`^\u0000`], // side effects
-                        ['^node:'],
-                        [String.raw`^@?(?!app|api|components|static|store|images)[\w-]`], // external
-                        ['^@components/', '^@app/', '^@api/', '^@store/', '^@/'],
+                        ['^node:'], // node modules
+                        [String.raw`^@?(?!app|lib|features|constants|hooks|components)[\w-]`], // external packages (react, next, etc.)
+                        ['^@app/', '^@lib/', '^@features/', '^@constants/', '^@hooks/'], // app aliases
+                        ['^@components/'], // components
+                        ['^@/'], // root alias
                         ['^@declarations/'], // types
                         ['^@static/', '^@images/'], // assets
                         [
-                            String.raw`^\.\.(?!/?$)`,
-                            String.raw`^\./(?=.*/)`,
+                            String.raw`^\.\.(?!/?$)`, // parent imports
+                            String.raw`^\.\./?$`,
+                            String.raw`^\./(?=.*/)`, // other relative imports
                             String.raw`^\.(?!/?$)`,
                             String.raw`^\./?$`,
-                        ], // local
-                        [String.raw`^.+\.s?css$`], // styles
+                        ], // relative imports
+                        [String.raw`^.+\.s?css$`], // style imports
                     ],
                 },
             ],
@@ -145,6 +156,12 @@ export default tseslint.config(
             'unicorn/error-message': 'off',
             'unicorn/prefer-add-event-listener': 'off',
             'unicorn/prefer-array-some': 'off',
+        },
+    },
+    {
+        files: ['**/api/**/*.{ts,tsx}', '**/app/api/**/*.{ts,tsx}', '**/app/lib/**/*.{ts,tsx}'],
+        rules: {
+            'no-console': 'off',
         },
     },
 );

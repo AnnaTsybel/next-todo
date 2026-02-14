@@ -1,7 +1,7 @@
 'use client';
 
-import { ThemeToggler } from '../components/ThemeToggler';
-import LavaLamp from '../components/ui/Lavalamp';
+import { ThemeToggler } from '../../components/ThemeToggler';
+import LavaLamp from '../../components/ui/Lavalamp';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
     return (
