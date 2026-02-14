@@ -44,9 +44,14 @@ export const DashBoardContent: React.FC<DashBoardContentProps> = ({ todosData })
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
         >
-            <div className="flex gap-4 p-4 overflow-x-auto">
+            <div className="flex gap-4 p-4 overflow-x-auto max-w-full">
                 {columns.map(col => (
-                    <DroppableColumn key={col.id} id={col.id} title={col.title}>
+                    <DroppableColumn
+                        key={col.id}
+                        id={col.id}
+                        title={col.title}
+                        className="flex-shrink-0 max-w-[500px]"
+                    >
                         <SortableContext
                             items={col.items.map(i => i.id)}
                             strategy={verticalListSortingStrategy}

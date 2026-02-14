@@ -1,3 +1,4 @@
+import { UpdateTodoSchema } from '@/app/features/todos/validation';
 import { getUserIdFromCookies } from '@/app/lib/auth';
 import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
 import { supabaseSrv } from '@/app/lib/supabase';
@@ -39,7 +40,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         const { error: selectError, data: todo } = await supabaseSrv
             .from('todos')
             .select()
-            .eq('id', todoId);
+            .eq('id', todoId)
+            .maybeSingle();
 
         if (selectError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
 
@@ -48,17 +50,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         return handleError(error);
     }
 }
-
-export const UpdateTodoSchema = z.object({
-    title: z.string().max(100, 'Title must be at most 100 characters').optional(),
-    description: z.string().max(500, 'Description must be at most 500 characters').optional(),
-    expired_at: z
-        .string()
-        .refine(val => !val || !isNaN(Date.parse(val)), 'Invalid date format')
-        .optional(),
-    status: z.enum(['todo', 'in_progress', 'done']).optional(),
-    type: z.enum(['task', 'bug', 'feature']).optional(),
-});
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -81,11 +72,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
             throw new ApiError(firstError.message, 400);
         }
 
+        const { status, title, description, expired_at, type } = parseResult.data;
+
         const { error: updateError } = await supabaseSrv
             .from('todos')
-            .update({
-                parseResult,
-            })
+            .update({ status, title, description, expired_at, type })
             .eq('id', todoId);
 
         if (updateError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);

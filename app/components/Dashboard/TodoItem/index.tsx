@@ -12,7 +12,6 @@ type TodoItemProps = {
 
 export function TodoItem({ todo }: TodoItemProps) {
     const router = useRouter();
-
     const { mutate: deleteTodo, isPending } = useDeleteTodo();
 
     const handleDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -24,10 +23,21 @@ export function TodoItem({ todo }: TodoItemProps) {
         router.push(`/todos/${todo.id}`);
     };
 
+    const isExpiredAndNotDone = todo.expired_at
+        ? new Date(todo.expired_at).getTime() < new Date().getTime() && todo.status !== 'done'
+        : false;
+
     return (
-        <article className="bg-background rounded-xl p-4 cursor-pointer hover:bg-opacity-80 transition">
+        <article
+            className={`
+                rounded-xl p-4 cursor-pointer transition
+                ${isExpiredAndNotDone ? 'bg-red-500/15 text-white' : 'bg-background hover:bg-opacity-80'}
+            `}
+        >
             <header className="mb-2 flex items-center justify-between">
-                <h3 className="todo-title text-base font-medium">{todo.title}</h3>
+                <h3 className="todo-title text-base font-medium truncate max-w-[70%]">
+                    {todo.title}
+                </h3>
 
                 <div className="flex gap-1 text-sm">
                     <button
@@ -45,6 +55,7 @@ export function TodoItem({ todo }: TodoItemProps) {
                     >
                         <Trash size={16} />
                     </button>
+
                     <button
                         type="button"
                         onClick={handleContentClick}
@@ -60,9 +71,6 @@ export function TodoItem({ todo }: TodoItemProps) {
                     </button>
                 </div>
             </header>
-
-            {todo.description && <p className="todo-muted mb-2 text-sm">{todo.description}</p>}
-
             <footer className="todo-muted flex gap-3 text-xs">
                 <span>🕒 {formatDate(todo.created_at)}</span>
                 {todo.expired_at && <span>⏰ {formatDate(todo.expired_at)}</span>}

@@ -1,5 +1,12 @@
-const Todo = () => {
-    return <div>todo</div>;
+import { TodoContent } from '@/app/components/Todo/Content';
+
+type Props = {
+    params: Promise<{ id: string }>;
 };
 
-export default Todo;
+const TodoPage = async ({ params }: Props) => {
+    const { id } = await params;
+
+    return <TodoContent id={id} />;
+};
+export default TodoPage;

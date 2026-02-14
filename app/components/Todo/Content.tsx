@@ -1,0 +1,110 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useGetTodoById, useUpdateTodo } from '@/app/features/todos/hooks';
+import { FormInput } from '../ui/FormInput';
+import { CommonSelect, Option } from '@/app/components/ui/CommonSelect';
+import { UpdateTodoFormData } from '@/app/features/todos/validation';
+import { TodoStatus, TodoType } from '@/app/features/todos/types';
+import { CommonTextarea } from '../ui/CommonTextarea';
+import { DatePickerField } from '../ui/DatePickerField';
+
+type Props = {
+    id: string;
+};
+
+const statusOptions: Option<UpdateTodoFormData['status']>[] = [
+    { label: 'Todo', value: 'todo' },
+    { label: 'In Progress', value: 'in_progress' },
+    { label: 'Done', value: 'done' },
+];
+
+export const TodoContent = ({ id }: Props) => {
+    const { data: todo, isLoading } = useGetTodoById(id);
+    const { mutate: updateTodo, isPending } = useUpdateTodo();
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        control,
+        formState: { errors, isSubmitting },
+    } = useForm<UpdateTodoFormData>({
+        defaultValues: {
+            title: '',
+            description: '',
+            status: 'todo' as TodoStatus,
+            type: 'default' as TodoType,
+            expired_at: new Date().toISOString(),
+        },
+    });
+
+    useEffect(() => {
+        if (todo) {
+            reset({
+                title: todo.title,
+                description: todo.description,
+                type: todo.type,
+                status: todo.status,
+                expired_at: todo.expired_at.toLocaleString(),
+            });
+        }
+    }, [todo, reset]);
+
+    const onSubmit = (data: UpdateTodoFormData) => {
+        if (!todo) return;
+
+        updateTodo({
+            id: todo.id,
+            title: data.title,
+            description: data.description,
+            type: data.type,
+            status: data.status,
+            expired_at: data.expired_at,
+        });
+    };
+
+    if (isLoading || !todo) return <p>Loading...</p>;
+
+    return (
+        <div className="relative flex min-h-screen items-center justify-center px-4 z-10">
+            <div className="w-full max-w-md p-6 rounded-2xl shadow bg-card relative">
+                <div className="absolute right-10 text-xs">
+                    <span className="font-semibold">Created:</span>{' '}
+                    {new Date(todo.created_at).toLocaleDateString()}
+                </div>
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex flex-col gap-[15px] max-w-2xl mx-auto p-6"
+                >
+                    <FormInput
+                        title="Title"
+                        placeholder="Title"
+                        register={register('title')}
+                        error={errors.title}
+                    />
+                    <CommonTextarea
+                        title="Description"
+                        placeholder="Description"
+                        register={register('description')}
+                        error={errors.description}
+                    />
+                    <CommonSelect
+                        label="Status"
+                        options={statusOptions}
+                        register={register('status')}
+                    />
+                    <DatePickerField label="Expires" control={control} name="expired_at" />
+                    <button
+                        type="submit"
+                        disabled={isPending}
+                        className="w-40 mx-auto flex justify-center rounded-md py-2 text-button font-semibold transition disabled:opacity-50 cursor-pointer bg-accent"
+                    >
+                        {isSubmitting || isPending ? 'Saving...' : 'Save'}
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+};

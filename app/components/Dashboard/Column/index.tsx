@@ -7,10 +7,12 @@ export const DroppableColumn = ({
     id,
     title,
     children,
+    className = '',
 }: {
     id: TodoStatus;
     title: string;
     children: React.ReactNode;
+    className?: string;
 }) => {
     const { setNodeRef, isOver } = useDroppable({ id });
 
@@ -20,6 +22,7 @@ export const DroppableColumn = ({
             className={`
         flex-1 min-w-[260px] min-h-[200px] rounded-lg p-3 relative transition
         ${isOver ? 'bg-card-secondary' : 'bg-card'}
+        ${className}
       `}
         >
             <header className="mb-3 flex items-center justify-between z-10 relative">

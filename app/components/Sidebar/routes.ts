@@ -1,4 +1,4 @@
-import { LayoutDashboard, CheckSquare, User, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Settings, Calendar } from 'lucide-react';
 
 export const sidebarRoutes = [
     {
@@ -7,14 +7,9 @@ export const sidebarRoutes = [
         icon: LayoutDashboard,
     },
     {
-        label: 'Todos',
+        label: 'Calendar',
         href: '/todos',
-        icon: CheckSquare,
-    },
-    {
-        label: 'Profile',
-        href: '/profile',
-        icon: User,
+        icon: Calendar,
     },
     {
         label: 'Settings',

@@ -128,3 +128,42 @@
         font-family: 'Inter';
     }
 }
+
+.rdp-tooltip {
+    --rdp-accent-color: #e16960;
+    --rdp-background-color: rgba(225, 105, 96, 0.1);
+    --rdp-transition: all 0.1s ease;
+}
+
+.rdp-tooltip .rdp-nav_button {
+    padding: 1px 3px;
+    font-size: 9px;
+}
+
+.rdp-tooltip .rdp-caption {
+    font-size: 10px;
+    padding: 2px 0 4px;
+}
+
+.rdp-tooltip .rdp-day {
+    font-size: 8px;
+
+    height: 15px;
+    width: 15px;
+}
+
+.rdp-tooltip .rdp-day_button {
+    height: 15px;
+    width: 15px;
+}
+.rdp-tooltip .rdp-day_selected {
+    font-size: 8px;
+
+    height: 15px;
+    width: 15px;
+}
+
+.dark .rdp-tooltip {
+    --rdp-accent-color: #ff6b6b;
+    --rdp-background-color: rgba(255, 107, 107, 0.1);
+}

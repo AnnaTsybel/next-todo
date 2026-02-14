@@ -5,6 +5,7 @@ import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import { useState } from 'react';
 
 interface FormInputProps {
+    title?: string;
     placeholder?: string;
     type?: string;
     error?: FieldError;
@@ -13,6 +14,7 @@ interface FormInputProps {
 }
 
 export const FormInput = ({
+    title,
     placeholder,
     type = 'text',
     error,
@@ -24,6 +26,7 @@ export const FormInput = ({
 
     return (
         <div className="relative">
+            {title && <label className="block font-semibold mb-1">{title}</label>}
             <input
                 {...register}
                 type={

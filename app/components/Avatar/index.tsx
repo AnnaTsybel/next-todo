@@ -4,9 +4,10 @@ interface AvatarProps {
     name: string;
     initialAvatar?: string;
     uploadAvatar?: (file: File) => void;
+    size?: number;
 }
 
-export default function Avatar({ name, initialAvatar, uploadAvatar }: AvatarProps) {
+export default function Avatar({ name, initialAvatar, uploadAvatar, size = 112 }: AvatarProps) {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!uploadAvatar) return;
 
@@ -20,7 +21,10 @@ export default function Avatar({ name, initialAvatar, uploadAvatar }: AvatarProp
 
     return (
         <div className="flex justify-center">
-            <div className="relative h-28 w-28 rounded-full border border-zinc-700 overflow-hidden cursor-pointer">
+            <div
+                className="relative h-28 w-28 rounded-full border border-zinc-700 overflow-hidden cursor-pointer"
+                style={{ width: size, height: size }}
+            >
                 {!!initialAvatar ? (
                     <Image src={initialAvatar} alt="avatar" fill className="object-cover" />
                 ) : (

@@ -7,10 +7,14 @@ import { sidebarRoutes } from './routes';
 import { useLogout } from '@/app/features/auth/hooks';
 import { LogOut } from 'lucide-react';
 import { ThemeToggler } from '../ThemeToggler';
+import Avatar from '../Avatar';
+import { useProfile } from '@/app/features/users/hooks';
+import { SkeletonWrapper } from '../ui/SkeletonWrapper';
 
 export function Sidebar() {
     const pathname = usePathname();
     const { mutate: logout } = useLogout();
+    const { data: profile, isLoading, isError } = useProfile();
 
     const handleLogout = async () => {
         await logout();
@@ -18,7 +22,29 @@ export function Sidebar() {
 
     return (
         <aside className="flex h-screen w-64 flex-col bg-card px-4 py-6 z-10 shadow">
-            <div className="mb-8 text-lg font-bold">Todo App</div>
+            <Link
+                href="/profile"
+                className="flex items-center gap-3 cursor-pointer mb-[30px]"
+                title="Go to profile"
+            >
+                <SkeletonWrapper isLoading={!profile} width={80} height={80} variant="circle">
+                    <Avatar
+                        name={profile?.name ?? ''}
+                        initialAvatar={profile?.avatar_url}
+                        size={80}
+                    />
+                </SkeletonWrapper>
+                <div className="flex flex-col leading-tight">
+                    <SkeletonWrapper isLoading={!profile} width={120} height={18}>
+                        <span className="text-md font-semibold">
+                            {profile?.name} {profile?.surname}
+                        </span>
+                    </SkeletonWrapper>
+                    <SkeletonWrapper isLoading={!profile} width={60} height={14}>
+                        <span className="text-md text-zinc-500">Profile</span>
+                    </SkeletonWrapper>
+                </div>
+            </Link>
             <nav className="flex flex-col gap-1">
                 {sidebarRoutes.map(route => {
                     const isActive =
@@ -40,7 +66,6 @@ export function Sidebar() {
                     );
                 })}
             </nav>
-
             <div className="mt-auto flex-col w-full items-center ">
                 <ThemeToggler />
                 <button
