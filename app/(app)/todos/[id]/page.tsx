@@ -1,4 +1,4 @@
-import { TodoContent } from '@/app/components/Todo/Content';
+import { TodoContent } from '@components/Todo/Content';
 
 type Props = {
     params: Promise<{ id: string }>;

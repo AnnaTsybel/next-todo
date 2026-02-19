@@ -1,11 +1,11 @@
+import { axiosInstance } from '@lib/axios-client';
 import {
     CreateTodoData,
     Todo,
     TodosResponse,
     UpdateTodoData,
     UpdateTodoStatusVariables,
-} from '@/app/features/todos/types';
-import { axiosInstance } from '@/app/lib/axios-client';
+} from '@features/todos/types';
 
 export const todosApi = {
     getTodos: async (): Promise<TodosResponse> => {

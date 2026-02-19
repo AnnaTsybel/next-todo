@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import z from 'zod';
 
-import { UpdateTodoSchema } from '@/app/features/todos/validation';
-import { getUserIdFromCookies } from '@/app/lib/auth';
-import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
-import { supabaseSrv } from '@/app/lib/supabase';
+import { getUserIdFromCookies } from '@lib/auth';
+import { ApiError, ErrorMessages, handleError } from '@lib/errors';
+import { supabaseSrv } from '@lib/supabase';
+import { UpdateTodoSchema } from '@features/todos/validation';
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {

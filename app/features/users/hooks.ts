@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { usersApi } from '@/app/features/users/api';
+import { usersApi } from '@features/users/api';
 
 export function useProfile() {
     return useQuery({

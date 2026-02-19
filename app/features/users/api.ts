@@ -1,5 +1,5 @@
-import { UpdateUserData, User } from '@/app/features/users/types';
-import { axiosInstance } from '@/app/lib/axios-client';
+import { axiosInstance } from '@lib/axios-client';
+import { UpdateUserData, User } from '@features/users/types';
 
 export const usersApi = {
     getProfile: async (): Promise<User> => {

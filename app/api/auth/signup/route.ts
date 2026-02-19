@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 
-import { signUpSchema } from '@/app/features/auth/validation';
-import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
-import { supabaseSrv } from '@/app/lib/supabase';
+import { ApiError, ErrorMessages, handleError } from '@lib/errors';
+import { supabaseSrv } from '@lib/supabase';
+import { signUpSchema } from '@features/auth/validation';
 
 export async function POST(req: Request) {
     try {

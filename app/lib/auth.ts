@@ -1,7 +1,7 @@
 import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
-import { JWT_SECRET } from '../constants/common';
+import { JWT_SECRET } from '@app/constants/common';
 
 /**
  * Get user ID from auth token cookie

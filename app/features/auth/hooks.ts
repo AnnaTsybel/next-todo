@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { authApi } from '@/app/features/auth/api';
+import { authApi } from '@features/auth/api';
 
 export const useSignIn = () => {
     return useMutation({

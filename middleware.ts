@@ -1,7 +1,7 @@
 import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { JWT_SECRET } from '@/app/constants/common';
+import { JWT_SECRET } from '@constants/common';
 
 const PUBLIC_ROUTES = new Set(['/auth/signup', '/auth/signin', '/forgot-password']);
 

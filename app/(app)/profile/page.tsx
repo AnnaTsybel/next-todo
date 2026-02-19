@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 
-import ProfileEdit from '@/app/components/Profile/Edit';
-import ProfileView from '@/app/components/Profile/View';
-import LavaLamp from '@/app/components/ui/Lavalamp';
-import { useProfile } from '@/app/features/users/hooks';
+import { useProfile } from '@features/users/hooks';
+
+import ProfileEdit from '@components/Profile/Edit';
+import ProfileView from '@components/Profile/View';
+import LavaLamp from '@components/ui/Lavalamp';
 
 export default function ProfilePage() {
     const { data: profile, isLoading, isError } = useProfile();

@@ -5,17 +5,15 @@ import { useForm } from 'react-hook-form';
 
 import { useAppDispatch } from '@app/store';
 import { closeModal } from '@app/store/modals/slice';
+import { useCreateTodo } from '@features/todos/hooks';
+import { TodoStatus, TodoType } from '@features/todos/types';
+import { CreateTodoFormData, CreateTodoSchema } from '@features/todos/validation';
 
 import { CommonSelect, Option } from '@components/ui/CommonSelect';
 import { CommonTextarea } from '@components/ui/CommonTextarea';
 import { DatePickerField } from '@components/ui/DatePickerField';
 import { FormInput } from '@components/ui/FormInput';
-
-import { useCreateTodo } from '@/app/features/todos/hooks';
-import { TodoStatus, TodoType } from '@/app/features/todos/types';
-import { CreateTodoFormData, CreateTodoSchema } from '@/app/features/todos/validation';
-
-import { ModalCommonWrapper } from './CommonWrapper';
+import { ModalCommonWrapper } from '@components/ui/Modal/CommonWrapper';
 
 const statusOptions: Option<CreateTodoFormData['status']>[] = [
     { label: 'Todo', value: 'todo' },

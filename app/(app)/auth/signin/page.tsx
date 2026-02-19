@@ -3,9 +3,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { FormInput } from '@/app/components/ui/FormInput';
-import { useSignIn } from '@/app/features/auth/hooks';
-import { SignInFormData, signInSchema } from '@/app/features/auth/validation';
+import { useSignIn } from '@features/auth/hooks';
+import { SignInFormData, signInSchema } from '@features/auth/validation';
+
+import { FormInput } from '@components/ui/FormInput';
 
 export default function SignInPage() {
     const { mutate: signIn, isPending } = useSignIn();

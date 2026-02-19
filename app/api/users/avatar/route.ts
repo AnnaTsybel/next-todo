@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getUserIdFromCookies } from '@/app/lib/auth';
-import { ApiError, ErrorMessages, handleError } from '@/app/lib/errors';
-import { supabaseSrv } from '@/app/lib/supabase';
+import { getUserIdFromCookies } from '@lib/auth';
+import { ApiError, ErrorMessages, handleError } from '@lib/errors';
+import { supabaseSrv } from '@lib/supabase';
 
 export async function POST(req: NextRequest) {
     try {

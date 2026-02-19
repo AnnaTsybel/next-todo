@@ -14,7 +14,7 @@ export const useGetTodos = () => {
 
 export const useGetTodoById = (id: string) => {
     return useQuery({
-        queryKey: ['GET_TODO_BY_ID'],
+        queryKey: ['GET_TODO_BY_ID', id],
         queryFn: () => todosApi.getTodoById(id),
         enabled: !!id,
     });
