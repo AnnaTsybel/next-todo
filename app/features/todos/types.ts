@@ -39,3 +39,6 @@ export interface UpdateTodoStatusVariables {
     id: string;
     status: TodoStatus;
 }
+
+export type GroupedTodos = Record<string, Todo[]>;
+export type RedirectedFrom = 'dashboard' | 'calendar';

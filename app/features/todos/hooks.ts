@@ -37,8 +37,13 @@ export const useUpdateTodo = () => {
     return useMutation({
         mutationFn: todosApi.updateTodo,
         onSuccess: (_, variables) => {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const year = now.getFullYear();
+
             queryClient.invalidateQueries({ queryKey: ['GET_TODOS'] });
             queryClient.invalidateQueries({ queryKey: ['GET_TODO_BY_ID', variables.id] });
+            queryClient.invalidateQueries({ queryKey: ['GET_CALENDAR_TODOS', month, year] });
         },
     });
 };
@@ -61,8 +66,21 @@ export const useDeleteTodo = () => {
     return useMutation({
         mutationFn: todosApi.deleteTodo,
         onSuccess: (_, todoId) => {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const year = now.getFullYear();
+
             queryClient.invalidateQueries({ queryKey: ['GET_TODOS'] });
             queryClient.removeQueries({ queryKey: ['GET_TODO_BY_ID', todoId] });
+            queryClient.invalidateQueries({ queryKey: ['GET_CALENDAR_TODOS', month, year] });
         },
+    });
+};
+
+export const useGetCalendarTodos = (month: number, year: number) => {
+    return useQuery({
+        queryKey: ['GET_CALENDAR_TODOS', month, year],
+        queryFn: () => todosApi.getCalendarTodos({ month, year }),
+        staleTime: 30_000,
     });
 };

@@ -26,4 +26,13 @@ export const todosApi = {
     updateTodoStatus: async ({ id, status }: UpdateTodoStatusVariables): Promise<void> => {
         return axiosInstance.patch(`/api/todos/${id}`, { status });
     },
+    getCalendarTodos: async ({
+        month,
+        year,
+    }: {
+        month: number;
+        year: number;
+    }): Promise<{ todos: Todo[]; length: number }> => {
+        return axiosInstance.get(`/api/todos/calendar?month=${month}&year=${year}`);
+    },
 };

@@ -36,6 +36,7 @@
         --todo-expired-bg: rgba(225, 105, 96, 0.08);
 
         --bg-card-secondary: #d5d5d5;
+        --accent-color: rgba(134, 146, 225, 0.962);
     }
 
     .dark {
@@ -61,6 +62,7 @@
         --todo-expired-bg: rgba(255, 107, 107, 0.12);
 
         --bg-card-secondary: #242424;
+        --accent-color: rgba(109, 123, 210, 0.653);
     }
 }
 
@@ -146,15 +148,15 @@
 }
 
 .rdp-tooltip .rdp-day {
-    font-size: 8px;
+    font-size: 12px;
 
-    height: 15px;
-    width: 15px;
+    height: 30px;
+    width: 30px;
 }
 
 .rdp-tooltip .rdp-day_button {
-    height: 15px;
-    width: 15px;
+    height: 30px;
+    width: 30px;
 }
 .rdp-tooltip .rdp-day_selected {
     font-size: 8px;
@@ -166,4 +168,16 @@
 .dark .rdp-tooltip {
     --rdp-accent-color: #ff6b6b;
     --rdp-background-color: rgba(255, 107, 107, 0.1);
+}
+
+.bg-accent-bold {
+    background: var(--accent-color);
+}
+
+.light .rdp-root {
+    --rdp-accent-color: var(--accent-color);
+}
+
+.dark .rdp-root {
+    --rdp-accent-color: var(--accent-color);
 }

@@ -4,7 +4,7 @@ import { DashBoard } from '@/app/components/Dashboard';
 
 export default function Home() {
     return (
-        <div className="flex min-h-screen justify-center font-sans w-full">
+        <div className="max-w-7xl mx-auto">
             <DashBoard />
         </div>
     );

@@ -58,7 +58,6 @@ export const DatePickerField = <T extends FieldValues>({
                         )}
 
                         <div className="relative flex-1">
-                            {/* Input button */}
                             <div
                                 onClick={() => setOpen(!open)}
                                 className="w-full flex items-center justify-between bg-card border border-gray-300 dark:border-zinc-700 rounded px-3 py-2 text-sm text-foreground hover:bg-card-secondary cursor-pointer transition"

@@ -1,7 +1,12 @@
 'use client';
 
-export default function Todos() {
+import { CalendarGrid } from '@components/Calendar/CalendarGrid';
+
+export default function CalendarContainer() {
     return (
-        <div className="flex min-h-screen items-center justify-center font-sans w-full">Todos</div>
+        <div className="h-screen p-5">
+            <h1 className="text-3xl font-bold text-foreground mb-8">Calendar</h1>
+            <CalendarGrid />
+        </div>
     );
 }

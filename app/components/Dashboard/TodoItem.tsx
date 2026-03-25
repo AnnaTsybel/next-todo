@@ -21,8 +21,8 @@ export function TodoItem({ todo }: TodoItemProps) {
         deleteTodo(todo.id);
     };
 
-    const handleContentClick = (e: React.MouseEvent) => {
-        router.push(`/todos/${todo.id}`);
+    const handleContentClick = () => {
+        router.push(`/todos/${todo.id}?from=dashboard`);
     };
 
     const isExpiredAndNotDone = useMemo(() => {
