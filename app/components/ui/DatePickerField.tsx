@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronDown, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 
@@ -19,6 +19,7 @@ export const DatePickerField = <T extends FieldValues>({
     name,
 }: DatePickerFieldProps<T>) => {
     const [open, setOpen] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const formatDateToYMD = (date: Date) => {
         const year = date.getFullYear();
@@ -27,6 +28,19 @@ export const DatePickerField = <T extends FieldValues>({
 
         return `${year}-${month}-${day}`;
     };
+
+    // Закрытие при клике вне
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     return (
         <Controller
@@ -50,7 +64,7 @@ export const DatePickerField = <T extends FieldValues>({
                 };
 
                 return (
-                    <div className="flex items-center gap-3 relative">
+                    <div className="flex items-center gap-3 relative" ref={containerRef}>
                         {label && (
                             <label className="font-semibold text-foreground whitespace-nowrap">
                                 {label}:
@@ -80,9 +94,14 @@ export const DatePickerField = <T extends FieldValues>({
                                 </div>
                             </div>
 
-                            {/* Calendar */}
                             {open && (
-                                <div className="absolute top-0 left-full ml-2 z-10 p-2 bg-card border border-gray-300 dark:border-zinc-700 rounded shadow-lg text-xs">
+                                <div
+                                    className={`
+                                    absolute z-10 p-2 bg-card border border-gray-300 dark:border-zinc-700 rounded shadow-lg text-xs
+                                    left-0 mt-1
+                                    sm:left-full sm:top-0 sm:ml-2
+                                `}
+                                >
                                     <DayPicker
                                         mode="single"
                                         selected={field.value ? new Date(field.value) : undefined}

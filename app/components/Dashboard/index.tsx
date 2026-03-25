@@ -9,10 +9,8 @@ export function DashBoard() {
     const { data: todos, isLoading } = useGetTodos();
 
     return (
-        <div className="min-h-screen p-6">
-            <div className="max-w-7xl mx-auto">
-                {isLoading ? <Loader /> : <TodosList todos={todos} />}
-            </div>
+        <div className="p-6 md:max-w-[calc(100vw-256px)]">
+            {isLoading ? <Loader /> : <TodosList todos={todos} />}
         </div>
     );
 }

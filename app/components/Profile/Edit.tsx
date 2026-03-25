@@ -45,7 +45,7 @@ export default function ProfileEdit({
     }
 
     return (
-        <div className="relative flex min-h-screen items-center justify-center px-4 z-10">
+        <div className="relative min-h-[calc(100vh-72px)] flex items-center justify-center px-4 z-10">
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full max-w-md rounded-2xl p-6 shadow bg-card"

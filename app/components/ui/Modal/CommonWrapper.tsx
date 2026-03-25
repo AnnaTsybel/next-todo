@@ -17,7 +17,8 @@ export const ModalCommonWrapper: React.FC<Props> = ({ children, title = '', clas
     return (
         <div
             className={`
-                w-[416px]
+                w-[calc(100vw-60px)]
+                sm:w-[416px]
                 p-6
                 rounded-2xl
                 bg-card

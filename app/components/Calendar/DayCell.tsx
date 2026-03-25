@@ -18,7 +18,7 @@ export const DayCell: React.FC<{
     return (
         <td
             onClick={!isOutside && dayTodos.length > 0 ? onToggleTodo : undefined}
-            className={`border border-gray-200 bg-background p-2 align-top w-[14.28%] relative ${
+            className={`border border-gray-200 bg-background p-2 align-top w-[14.28%] h-[75px] md:h-auto relative ${
                 isOutside
                     ? 'opacity-50 pointer-events-none'
                     : `${dayTodos.length > 0 ? 'cursor-pointer' : 'cursor-default'}`
@@ -35,8 +35,23 @@ export const DayCell: React.FC<{
                 </span>
 
                 {dayTodos.length > 0 && !isOutside && (
-                    <span className="absolute bottom-2 right-2 bg-accent-bold text-xs rounded px-1.5 py-0.5 transition-opacity text-foreground">
-                        {dayTodos.length} {dayTodos.length === 1 ? 'task' : 'tasks'}
+                    <span
+                        className={`
+                        absolute 
+                        bottom-2
+                        right-2
+                        bg-accent-bold 
+                        text-[10px] sm:text-xs 
+                        rounded px-1.5 py-0.5 
+                        transition-opacity text-foreground
+                        min-w-[20px] text-center
+                        `}
+                    >
+                        <span className="sm:hidden">{dayTodos.length}</span>
+
+                        <span className="hidden sm:inline">
+                            {dayTodos.length} {dayTodos.length === 1 ? 'task' : 'tasks'}
+                        </span>
                     </span>
                 )}
             </div>

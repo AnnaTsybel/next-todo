@@ -46,13 +46,13 @@ export const DashBoardContent: React.FC<DashBoardContentProps> = ({ todosData })
             onDragEnd={handleDragEnd}
         >
             <div className="w-full overflow-x-auto">
-                <div className="grid grid-cols-3 gap-4 p-4 min-w-[1200px]">
+                <div className="inline-grid grid-flow-col gap-4 pb-6">
                     {columns.map(col => (
                         <DroppableColumn
                             key={col.id}
                             id={col.id}
                             title={col.title}
-                            className="min-w-[380px]"
+                            className="w-[calc(100vw-100px)] min-w-auto md:min-w-[380px] md:w-auto"
                         >
                             <SortableContext
                                 items={col.items.map(i => i.id)}

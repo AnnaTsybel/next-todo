@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { LogOut } from 'lucide-react';
+import { LogOut, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -13,19 +13,39 @@ import { ThemeToggler } from '@components/ThemeToggler';
 import Avatar from '@components/ui/Avatar';
 import { SkeletonWrapper } from '@components/ui/SkeletonWrapper';
 
-export function Sidebar() {
+type SidebarProps = {
+    isOpen?: boolean;
+    closeSidebar?: () => void;
+};
+
+export function Sidebar({ isOpen, closeSidebar }: SidebarProps) {
     const pathname = usePathname();
     const { mutate: logout } = useLogout();
     const { data: profile, isLoading } = useProfile();
 
     const handleLogout = async () => {
         await logout();
+        closeSidebar && closeSidebar();
     };
 
     return (
-        <aside className="flex h-screen w-64 flex-col bg-card px-4 py-6 z-10 shadow">
+        <div
+            className={clsx(
+                'fixed top-0 left-0 h-screen flex flex-col bg-card px-4 py-6 shadow-md z-15 transform transition-transform md:static md:translate-x-0 md:w-64 w-full',
+            )}
+        >
+            {isOpen && closeSidebar && (
+                <button
+                    className="self-end px-2 rounded-md bg-card md:hidden"
+                    onClick={closeSidebar}
+                >
+                    <X />
+                </button>
+            )}
+
             <Link
                 href="/profile"
+                onClick={closeSidebar}
                 className="flex items-center gap-3 cursor-pointer mb-[30px]"
                 title="Go to profile"
             >
@@ -52,6 +72,7 @@ export function Sidebar() {
                     </SkeletonWrapper>
                 </div>
             </Link>
+
             <nav className="flex flex-col gap-1">
                 {sidebarRoutes.map(route => {
                     const isActive =
@@ -66,6 +87,7 @@ export function Sidebar() {
                                 'flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
                                 isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-muted',
                             )}
+                            onClick={closeSidebar}
                         >
                             <Icon className="h-4 w-4" />
                             {route.label}
@@ -73,7 +95,8 @@ export function Sidebar() {
                     );
                 })}
             </nav>
-            <div className="mt-auto flex-col w-full items-center ">
+
+            <div className="mt-auto flex-col w-full items-center">
                 <ThemeToggler />
                 <button
                     onClick={handleLogout}
@@ -83,6 +106,6 @@ export function Sidebar() {
                     Logout
                 </button>
             </div>
-        </aside>
+        </div>
     );
 }

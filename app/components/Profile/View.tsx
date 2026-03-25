@@ -7,7 +7,7 @@ export default function ProfileView({ profile, onEdit }: { profile: User; onEdit
     const { mutateAsync: uploadAvatar } = useUploadAvatar();
 
     return (
-        <div className="relative flex min-h-screen items-center justify-center px-4 z-10">
+        <div className="relative flex min-h-[calc(100vh-72px)] items-center justify-center px-4 z-10">
             <div className="w-full max-w-md p-6 rounded-2xl shadow bg-card">
                 <div className="flex justify-center">
                     <Avatar

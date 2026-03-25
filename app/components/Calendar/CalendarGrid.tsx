@@ -43,7 +43,7 @@ export const CalendarGrid = () => {
     };
 
     return (
-        <div className="max-w-[100%] mx-auto min-h-[60vh] bg-card rounded-2xl shadow-lg p-8">
+        <div className="max-w-[100%] mx-auto min-h-[70vh] md:min-h-[60vh] bg-card rounded-2xl shadow-lg p-5 md:p-8">
             <DayPicker
                 showOutsideDays
                 onMonthChange={setDisplayMonth}

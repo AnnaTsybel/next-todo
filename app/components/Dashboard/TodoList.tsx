@@ -12,14 +12,14 @@ export const TodosList: React.FC<{ todos: TodosResponse | undefined }> = ({ todo
     }
 
     return (
-        <div>
-            <div className="max-w-7xl mx-auto mb-8">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-3xl font-bold text-foreground">My Todos</h1>
-                    <CreateTodoButton />
-                </div>
+        <>
+            <div className="mb-10 flex items-center justify-between">
+                <h1 className="text-3xl font-bold text-foreground">My Todos</h1>
+                <CreateTodoButton />
             </div>
-            <DashBoardContent todosData={todos.todos} />
-        </div>
+            <div className="max-w-screen mx-auto">
+                <DashBoardContent todosData={todos.todos} />
+            </div>
+        </>
     );
 };
