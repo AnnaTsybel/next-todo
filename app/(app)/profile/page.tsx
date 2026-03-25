@@ -14,7 +14,7 @@ export default function ProfilePage() {
 
     if (isLoading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-zinc-400">
+            <div className="flex min-h-dvh items-center justify-center bg-zinc-950 text-zinc-400">
                 Loading profile...
             </div>
         );
@@ -22,7 +22,7 @@ export default function ProfilePage() {
 
     if (isError || !profile) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-red-400">
+            <div className="flex min-h-dvh items-center justify-center bg-zinc-950 text-red-400">
                 Failed to load profile
             </div>
         );

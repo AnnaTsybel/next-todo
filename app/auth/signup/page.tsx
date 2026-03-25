@@ -40,10 +40,10 @@ export default function SignUpPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center">
+        <div className="flex min-h-dvh items-center justify-center">
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="w-full max-w-sm space-y-4 rounded-xl p-6 shadow bg-card"
+                className="w-[calc(100vw-40px)] md:w-full max-w-sm space-y-4 rounded-xl p-6 shadow bg-card"
             >
                 <h1 className="text-center text-2xl font-semibold">Create account</h1>
                 <FormInput

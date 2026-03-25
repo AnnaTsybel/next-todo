@@ -87,7 +87,7 @@ export const TodoContent = ({ id, from = 'dashboard' }: Props) => {
 
     return (
         <div className="relative flex min-h-screen items-center justify-center px-4 z-10">
-            <Link href={backUrl} className="absolute top-[40px] left-[40px]">
+            <Link href={backUrl} className="absolute top-[40px] left-4 md:left-[40px]">
                 <ArrowLeft />
             </Link>
             <div className="w-full max-w-md p-6 rounded-2xl shadow bg-card relative">

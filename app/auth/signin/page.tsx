@@ -32,9 +32,9 @@ export default function SignInPage() {
     });
 
     return (
-        <div className="flex min-h-screen items-center justify-center">
+        <div className="flex min-h-dvh items-center justify-center">
             <form
-                className="w-full max-w-sm space-y-4 rounded-xl p-6 shadow bg-card"
+                className="w-[calc(100vw-40px)] md:w-full max-w-sm space-y-4 rounded-xl p-6 shadow bg-card"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <h1 className="text-center text-2xl font-semibold">Login in account</h1>

@@ -13,7 +13,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const closeSidebar = () => setIsSidebarOpen(false);
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex min-h-dvh">
             <aside className="hidden md:flex">
                 <Sidebar />
             </aside>
@@ -45,7 +45,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     </button>
                 </header>
 
-                <div className="max-w-[100vw] min-h-[calc(100vh-72px)] md:min-h-screen">
+                <div className="max-w-[100vw] min-h-[calc(100vh-72px)] md:min-h-dvh">
                     {children}
                 </div>
             </main>

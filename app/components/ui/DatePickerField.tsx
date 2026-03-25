@@ -97,10 +97,9 @@ export const DatePickerField = <T extends FieldValues>({
                             {open && (
                                 <div
                                     className={`
-                                    absolute z-10 p-2 bg-card border border-gray-300 dark:border-zinc-700 rounded shadow-lg text-xs
-                                    left-0 mt-1
-                                    sm:left-full sm:top-0 sm:ml-2
-                                `}
+                                        absolute z-10 p-2 bg-card border border-gray-300 dark:border-zinc-700 rounded shadow-lg text-xs
+                                        bottom-full mb-1 left-0
+                                    `}
                                 >
                                     <DayPicker
                                         mode="single"
