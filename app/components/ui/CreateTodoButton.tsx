@@ -24,7 +24,7 @@ export const CreateTodoButton = () => {
             "
         >
             <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span>Create Todo</span>
+            <span>Create Task</span>
         </button>
     );
 };

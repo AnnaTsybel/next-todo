@@ -10,8 +10,8 @@ import { StoreProvider } from './components/wrappers/StoreProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
-    title: 'Todo App',
-    description: 'Organize your tasks and boost your productivity with this Todo App.',
+    title: 'Planner',
+    description: 'Organize your tasks and boost your productivity with Planner.',
 };
 
 export default async function RootLayout({

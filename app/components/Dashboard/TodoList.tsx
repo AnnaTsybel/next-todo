@@ -14,7 +14,7 @@ export const TodosList: React.FC<{ todos: TodosResponse | undefined }> = ({ todo
     return (
         <>
             <div className="mb-10 flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-foreground">My Todos</h1>
+                <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
                 <CreateTodoButton />
             </div>
             <div className="max-w-screen mx-auto">

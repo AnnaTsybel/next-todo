@@ -14,7 +14,7 @@ export const DayTodosModal: React.FC<{ date: Date; todos: Todo[] }> = ({ date, t
     const dispatch = useAppDispatch();
 
     const handleOnClick = (todo: Todo) => {
-        router.push(`/todos/${todo.id}?from=calendar`);
+        router.push(`/tasks/${todo.id}?from=calendar`);
 
         dispatch(closeModal());
     };

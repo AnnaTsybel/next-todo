@@ -20,7 +20,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
             <div
                 className={clsx(
-                    'fixed inset-y-0 right-0 z-20 w-[70vw] flex flex-col bg-card transition-transform transform md:hidden',
+                    'fixed inset-y-0 right-0 z-50 w-[70vw] flex flex-col bg-card transition-transform md:hidden',
                     {
                         'translate-x-full': !isSidebarOpen,
                         'translate-x-0': isSidebarOpen,
@@ -30,14 +30,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
             </div>
 
+            {/* Overlay */}
             {isSidebarOpen && (
-                <div className="fixed inset-0 z-11 bg-black/40 md:hidden" onClick={closeSidebar} />
+                <div className="fixed inset-0 z-40 bg-black/40 md:hidden" onClick={closeSidebar} />
             )}
 
-            <main className="flex-1 bg-background relative">
-                <header className="md:hidden flex items-center justify-end p-4 shadow-sm bg-card sticky top-0 z-10">
+            <main className="relative flex-1 bg-background">
+                {/* Header */}
+                <header className="sticky top-0 z-30 flex items-center justify-end bg-card p-4 shadow-sm md:hidden">
                     <button
-                        className="p-2 rounded-md bg-card"
+                        className="rounded-md bg-card p-2"
                         onClick={toggleSidebar}
                         aria-label={isSidebarOpen ? 'Close menu' : 'Open menu'}
                     >
@@ -45,7 +47,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     </button>
                 </header>
 
-                <div className="max-w-[100vw] min-h-[calc(100vh-72px)] md:min-h-dvh">
+                <div className="max-w-[100vw] min-h-[calc(100dvh-72px)] md:min-h-dvh">
                     {children}
                 </div>
             </main>

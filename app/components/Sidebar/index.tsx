@@ -31,7 +31,10 @@ export function Sidebar({ isOpen, closeSidebar }: SidebarProps) {
     return (
         <div
             className={clsx(
-                'fixed top-0 left-0 h-screen flex flex-col bg-card px-4 md:py-6 shadow-md z-15 transform transition-transform md:static md:translate-x-0 md:w-64 w-full',
+                'fixed top-0 left-0 flex flex-col bg-card px-4 shadow-md z-15 transform transition-transform',
+                'h-[100dvh] pt-[40px] pb-[40px] md:pt-6 md:pb-6',
+                'md:static md:translate-x-0 md:w-64 w-full',
+                'overflow-y-auto',
             )}
         >
             {isOpen && closeSidebar && (
@@ -61,19 +64,21 @@ export function Sidebar({ isOpen, closeSidebar }: SidebarProps) {
                         size={80}
                     />
                 </SkeletonWrapper>
+
                 <div className="flex flex-col gap-1 leading-tight">
                     <SkeletonWrapper isLoading={!profile || isLoading} width={120} height={18}>
                         <span className="text-md font-semibold">
                             {profile?.name} {profile?.surname}
                         </span>
                     </SkeletonWrapper>
+
                     <SkeletonWrapper isLoading={!profile || isLoading} width={60} height={14}>
                         <span className="text-md text-zinc-500">Profile</span>
                     </SkeletonWrapper>
                 </div>
             </Link>
 
-            <nav className="flex flex-col gap-1">
+            <nav className="flex flex-col gap-1 flex-1">
                 {sidebarRoutes.map(route => {
                     const isActive =
                         pathname === route.href || pathname.startsWith(`${route.href}/`);
@@ -96,8 +101,9 @@ export function Sidebar({ isOpen, closeSidebar }: SidebarProps) {
                 })}
             </nav>
 
-            <div className="mt-[60px] md:mt-auto flex-col w-full items-center">
+            <div className="mt-auto flex w-full flex-col items-start gap-2">
                 <ThemeToggler />
+
                 <button
                     onClick={handleLogout}
                     className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm hover:bg-accent transition-colors cursor-pointer"

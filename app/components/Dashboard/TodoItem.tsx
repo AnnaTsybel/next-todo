@@ -22,7 +22,7 @@ export function TodoItem({ todo }: TodoItemProps) {
     };
 
     const handleContentClick = () => {
-        router.push(`/todos/${todo.id}?from=dashboard`);
+        router.push(`/tasks/${todo.id}?from=dashboard`);
     };
 
     const isExpiredAndNotDone = useMemo(() => {
