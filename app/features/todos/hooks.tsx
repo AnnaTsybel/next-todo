@@ -1,23 +1,41 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 import { todosApi } from './api';
+import { handleTodoError } from './errorHandler';
 
 export const useGetTodos = () => {
-    return useQuery({
+    const query = useQuery({
         queryKey: ['GET_TODOS'],
         queryFn: todosApi.getTodos,
         staleTime: 30_000,
     });
+
+    useEffect(() => {
+        if (query.error) {
+            handleTodoError(query.error);
+        }
+    }, [query.error]);
+
+    return query;
 };
 
 export const useGetTodoById = (id: string) => {
-    return useQuery({
+    const query = useQuery({
         queryKey: ['GET_TODO_BY_ID', id],
         queryFn: () => todosApi.getTodoById(id),
         enabled: !!id,
     });
+
+    useEffect(() => {
+        if (query.error) {
+            handleTodoError(query.error);
+        }
+    }, [query.error]);
+
+    return query;
 };
 
 export const useCreateTodo = () => {
@@ -28,6 +46,7 @@ export const useCreateTodo = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['GET_TODOS'] });
         },
+        onError: handleTodoError,
     });
 };
 
@@ -45,6 +64,7 @@ export const useUpdateTodo = () => {
             queryClient.invalidateQueries({ queryKey: ['GET_TODO_BY_ID', variables.id] });
             queryClient.invalidateQueries({ queryKey: ['GET_CALENDAR_TODOS', month, year] });
         },
+        onError: handleTodoError,
     });
 };
 
@@ -57,6 +77,7 @@ export const useUpdateTodoStatus = () => {
             queryClient.invalidateQueries({ queryKey: ['GET_TODOS'] });
             queryClient.invalidateQueries({ queryKey: ['GET_TODO_BY_ID', variables.id] });
         },
+        onError: handleTodoError,
     });
 };
 
@@ -74,13 +95,22 @@ export const useDeleteTodo = () => {
             queryClient.removeQueries({ queryKey: ['GET_TODO_BY_ID', todoId] });
             queryClient.invalidateQueries({ queryKey: ['GET_CALENDAR_TODOS', month, year] });
         },
+        onError: handleTodoError,
     });
 };
 
 export const useGetCalendarTodos = (month: number, year: number) => {
-    return useQuery({
+    const query = useQuery({
         queryKey: ['GET_CALENDAR_TODOS', month, year],
         queryFn: () => todosApi.getCalendarTodos({ month, year }),
         staleTime: 30_000,
     });
+
+    useEffect(() => {
+        if (query.error) {
+            handleTodoError(query.error);
+        }
+    }, [query.error]);
+
+    return query;
 };

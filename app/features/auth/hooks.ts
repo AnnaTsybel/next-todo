@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { authApi } from '@features/auth/api';
+import { handleAuthError } from '@features/auth/errorHandler';
 
 export const useSignIn = () => {
     return useMutation({
@@ -13,9 +14,7 @@ export const useSignIn = () => {
             await new Promise(resolve => setTimeout(resolve, 1000));
             window.location.href = '/';
         },
-        onError: error => {
-            toast.error('Something went wrong in signing in!');
-        },
+        onError: handleAuthError,
     });
 };
 
@@ -27,6 +26,7 @@ export const useSignUp = () => {
         onSuccess: _ => {
             router.push('/auth/signin');
         },
+        onError: handleAuthError,
     });
 };
 
@@ -38,6 +38,9 @@ export const useLogout = () => {
         onSuccess: () => {
             router.refresh();
             router.push('/auth/signin');
+        },
+        onError: () => {
+            toast.error('Failed to log out. Please try again.');
         },
     });
 };

@@ -31,7 +31,7 @@ export function Sidebar({ isOpen, closeSidebar }: SidebarProps) {
     return (
         <div
             className={clsx(
-                'fixed top-0 left-0 h-screen flex flex-col bg-card px-4 py-6 shadow-md z-15 transform transition-transform md:static md:translate-x-0 md:w-64 w-full',
+                'fixed top-0 left-0 h-screen flex flex-col bg-card px-4 md:py-6 shadow-md z-15 transform transition-transform md:static md:translate-x-0 md:w-64 w-full',
             )}
         >
             {isOpen && closeSidebar && (
@@ -61,7 +61,7 @@ export function Sidebar({ isOpen, closeSidebar }: SidebarProps) {
                         size={80}
                     />
                 </SkeletonWrapper>
-                <div className="flex flex-col leading-tight">
+                <div className="flex flex-col gap-1 leading-tight">
                     <SkeletonWrapper isLoading={!profile || isLoading} width={120} height={18}>
                         <span className="text-md font-semibold">
                             {profile?.name} {profile?.surname}
@@ -96,7 +96,7 @@ export function Sidebar({ isOpen, closeSidebar }: SidebarProps) {
                 })}
             </nav>
 
-            <div className="mt-auto flex-col w-full items-center">
+            <div className="mt-[60px] md:mt-auto flex-col w-full items-center">
                 <ThemeToggler />
                 <button
                     onClick={handleLogout}
