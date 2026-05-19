@@ -34,7 +34,7 @@ Key technologies:
 
 Make sure you have installed:
 
-- [Node.js](https://nodejs.org/) v18 or higher
+- [Node.js](https://nodejs.org/) v20.9.0 or higher
 - [npm](https://www.npmjs.com/)
 - A [Supabase](https://supabase.com/) project (free tier works fine)
 
