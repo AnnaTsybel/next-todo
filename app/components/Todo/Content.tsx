@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { useGetTodoTypes } from '@features/todo-types/hooks';
 import { useDeleteTodo, useGetTodoById, useUpdateTodo } from '@features/todos/hooks';
-import { RedirectedFrom, TodoStatus, TodoType } from '@features/todos/types';
+import { RedirectedFrom, TodoStatus } from '@features/todos/types';
 import { UpdateTodoFormData } from '@features/todos/validation';
 
 import { CommonSelect, Option } from '@components/ui/CommonSelect';
@@ -33,6 +34,12 @@ export const TodoContent = ({ id, from = 'dashboard' }: Props) => {
     const { data: todo, isLoading } = useGetTodoById(id);
     const { mutate: updateTodo, isPending } = useUpdateTodo();
     const { mutate: deleteTodo, isPending: isDeleting } = useDeleteTodo();
+    const { data: types = [], isLoading: isTypesLoading } = useGetTodoTypes();
+
+    const typeOptions = types.map(type => ({
+        label: type.name,
+        value: type.id,
+    }));
 
     const backUrl = from === 'dashboard' ? '/' : '/tasks';
 
@@ -47,22 +54,22 @@ export const TodoContent = ({ id, from = 'dashboard' }: Props) => {
             title: '',
             description: '',
             status: 'todo' as TodoStatus,
-            type: 'default' as TodoType,
+            type_id: 0,
             expired_at: new Date().toISOString(),
         },
     });
 
     useEffect(() => {
-        if (todo) {
+        if (todo && types.length > 0) {
             reset({
                 title: todo.title,
                 description: todo.description,
-                type: todo.type,
+                type_id: todo.type.id,
                 status: todo.status,
                 expired_at: todo.expired_at.toLocaleString(),
             });
         }
-    }, [todo, reset]);
+    }, [todo, types, reset]);
 
     const onSubmit = (data: UpdateTodoFormData) => {
         if (!todo) return;
@@ -71,7 +78,7 @@ export const TodoContent = ({ id, from = 'dashboard' }: Props) => {
             id: todo.id,
             title: data.title,
             description: data.description,
-            type: data.type,
+            type_id: data.type_id,
             status: data.status,
             expired_at: data.expired_at,
         });
@@ -83,7 +90,7 @@ export const TodoContent = ({ id, from = 'dashboard' }: Props) => {
         router.push(backUrl);
     };
 
-    if (isLoading || !todo) return <Loader />;
+    if (isLoading || !todo || isTypesLoading) return <Loader />;
 
     return (
         <div className="relative flex min-h-screen items-center justify-center px-4 z-10">
@@ -128,6 +135,11 @@ export const TodoContent = ({ id, from = 'dashboard' }: Props) => {
                         placeholder="Description"
                         register={register('description')}
                         error={errors.description}
+                    />
+                    <CommonSelect
+                        label="Type"
+                        options={typeOptions}
+                        register={register('type_id')}
                     />
                     <CommonSelect
                         label="Status"

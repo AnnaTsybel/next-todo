@@ -24,7 +24,23 @@ export async function GET(request: NextRequest) {
 
         const { data, error } = await supabaseSrv
             .from('todos')
-            .select('*')
+            .select(
+                `
+            id,
+            title,
+            description,
+            status,
+            expired_at,
+            created_at,
+            type:todo_types (
+                id,
+                name,
+                color,
+                is_system,
+                system_key
+            )
+        `,
+            )
             .eq('user_id', userId)
             .gte('expired_at', startDate)
             .lt('expired_at', endDate)

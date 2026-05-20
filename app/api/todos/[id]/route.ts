@@ -26,7 +26,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
         handleError(error);
     }
 }
-
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const userId = await getUserIdFromCookies();
@@ -40,13 +39,23 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
         const { error: selectError, data: todo } = await supabaseSrv
             .from('todos')
-            .select()
+            .select('*')
             .eq('id', todoId)
+            .eq('user_id', userId)
             .maybeSingle();
 
         if (selectError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
+        if (!todo) throw new ApiError(ErrorMessages.TODO.NOT_FOUND, 404);
 
-        return NextResponse.json({ ok: true, data: todo }, { status: 200 });
+        const { error: typeError, data: type } = await supabaseSrv
+            .from('todo_types')
+            .select('id, name, color, is_system, system_key')
+            .eq('id', todo.type_id)
+            .maybeSingle();
+
+        if (typeError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
+
+        return NextResponse.json({ ok: true, data: { ...todo, type } }, { status: 200 });
     } catch (error) {
         return handleError(error);
     }
@@ -73,11 +82,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
             throw new ApiError(firstError.message, 400);
         }
 
-        const { status, title, description, expired_at, type } = parseResult.data;
+        const { status, title, description, expired_at, type_id } = parseResult.data;
 
         const { error: updateError } = await supabaseSrv
             .from('todos')
-            .update({ status, title, description, expired_at, type })
+            .update({ status, title, description, expired_at, type_id })
             .eq('id', todoId);
 
         if (updateError) throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);

@@ -1,5 +1,6 @@
+import { TodoType } from '@features/todo-types/types';
+
 export type TodoStatus = 'todo' | 'in_progress' | 'done';
-export type TodoType = 'default' | 'sport' | 'education' | 'task';
 
 export interface Todo {
     id: string;
@@ -13,6 +14,7 @@ export interface Todo {
 }
 
 export type TodosData = Record<TodoStatus, Todo[]>;
+
 export type TodosResponse = {
     todos: TodosData;
     length: number;
@@ -21,7 +23,7 @@ export type TodosResponse = {
 export interface CreateTodoData {
     title: string;
     description: string;
-    type: TodoType;
+    type_id: number;
     expired_at: Date | string;
     status: TodoStatus;
 }

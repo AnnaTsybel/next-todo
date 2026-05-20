@@ -1,6 +1,6 @@
 import { toast } from 'sonner';
 
-import { ErrorMessages } from '@/app/lib/errors';
+import { ErrorMessages } from '@lib/errors';
 
 type TodoErrorCode =
     | typeof ErrorMessages.TODO.TODO_NO_ID

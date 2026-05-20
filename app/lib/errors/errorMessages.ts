@@ -23,6 +23,15 @@ export const ErrorMessages = {
         UPDATE_FAILED: 'Failed to update todo',
         DELETE_FAILED: 'Failed to delete todo',
     },
+    TODO_TYPES: {
+        NOT_FOUND: 'Todo type not found',
+        FORBIDDEN: 'Access denied',
+        CREATE_FAILED: 'Internal server error while creating todo type',
+        UPDATE_FAILED: 'Internal server error while updating todo type',
+        DELETE_FAILED: 'Internal server error while deleting todo type',
+        SYSTEM_TYPE_EDIT: 'System todo types cannot be modified',
+        SYSTEM_TYPE_DELETE: 'System todo types cannot be deleted',
+    },
     COMMON: {
         NOT_FOUND: 'Not found',
         SERVER_ERROR: 'Unexpected server error',

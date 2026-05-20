@@ -8,8 +8,10 @@ import {
 } from '@features/todos/types';
 
 export const todosApi = {
-    getTodos: async (): Promise<TodosResponse> => {
-        return axiosInstance.get('/api/todos');
+    getTodos: async (typeId?: number): Promise<TodosResponse> => {
+        return axiosInstance.get('/api/todos', {
+            params: typeId ? { type_id: typeId } : undefined,
+        });
     },
     getTodoById: async (id: string): Promise<Todo> => {
         return axiosInstance.get(`/api/todos/${id}`);

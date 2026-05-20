@@ -30,13 +30,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
             </div>
 
-            {/* Overlay */}
             {isSidebarOpen && (
                 <div className="fixed inset-0 z-40 bg-black/40 md:hidden" onClick={closeSidebar} />
             )}
 
             <main className="relative flex-1 bg-background">
-                {/* Header */}
                 <header className="sticky top-0 z-30 flex items-center justify-end bg-card p-4 shadow-sm md:hidden">
                     <button
                         className="rounded-md bg-card p-2"

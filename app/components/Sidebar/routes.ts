@@ -1,4 +1,4 @@
-import { Calendar, LayoutDashboard } from 'lucide-react';
+import { Calendar, LayoutDashboard, Settings } from 'lucide-react';
 
 export const sidebarRoutes = [
     {
@@ -10,5 +10,10 @@ export const sidebarRoutes = [
         label: 'Calendar',
         href: '/tasks',
         icon: Calendar,
+    },
+    {
+        label: 'Settings',
+        href: '/settings',
+        icon: Settings,
     },
 ] as const;

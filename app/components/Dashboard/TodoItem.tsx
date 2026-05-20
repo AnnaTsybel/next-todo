@@ -8,6 +8,8 @@ import { formatDate } from '@app/utils/date';
 import { useDeleteTodo } from '@features/todos/hooks';
 import { Todo } from '@features/todos/types';
 
+import { TypeBadge } from '@components/ui/TypeBadge';
+
 type TodoItemProps = {
     todo: Todo;
 };
@@ -76,9 +78,16 @@ export function TodoItem({ todo }: TodoItemProps) {
                     </button>
                 </div>
             </header>
-            <footer className="todo-muted flex gap-3 text-xs">
-                <span>🕒 {formatDate(todo.created_at)}</span>
-                {todo.expired_at && <span>⏰ {formatDate(todo.expired_at)}</span>}
+            <footer className="todo-muted flex items-end justify-between gap-3 text-xs">
+                <div className="flex gap-3 overflow-hidden">
+                    <span className="truncate">🕒 {formatDate(todo.created_at)}</span>
+
+                    {todo.expired_at && (
+                        <span className="truncate">⏰ {formatDate(todo.expired_at)}</span>
+                    )}
+                </div>
+
+                {todo.type && <TypeBadge color={todo.type.color} name={todo.type.name} />}
             </footer>
         </article>
     );

@@ -6,10 +6,10 @@ import { useEffect } from 'react';
 import { todosApi } from './api';
 import { handleTodoError } from './errorHandler';
 
-export const useGetTodos = () => {
+export const useGetTodos = (typeId?: number) => {
     const query = useQuery({
-        queryKey: ['GET_TODOS'],
-        queryFn: todosApi.getTodos,
+        queryKey: ['GET_TODOS', typeId],
+        queryFn: () => todosApi.getTodos(typeId),
         staleTime: 30_000,
     });
 

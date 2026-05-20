@@ -1,12 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { Resolver, useForm } from 'react-hook-form';
 
 import { useAppDispatch } from '@app/store';
 import { closeModal } from '@app/store/modals/slice';
+import { useGetTodoTypes } from '@features/todo-types/hooks';
 import { useCreateTodo } from '@features/todos/hooks';
-import { TodoStatus, TodoType } from '@features/todos/types';
+import { TodoStatus } from '@features/todos/types';
 import { CreateTodoFormData, CreateTodoSchema } from '@features/todos/validation';
 
 import { CommonSelect, Option } from '@components/ui/CommonSelect';
@@ -21,30 +23,31 @@ const statusOptions: Option<CreateTodoFormData['status']>[] = [
     { label: 'Done', value: 'done' },
 ];
 
-const typeOptions: Option<CreateTodoFormData['type']>[] = [
-    { label: 'Default', value: 'default' },
-    { label: 'Sport', value: 'sport' },
-    { label: 'Education', value: 'education' },
-    { label: 'Task', value: 'task' },
-];
-
 export const CreateTodo = () => {
     const dispatch = useAppDispatch();
 
     const { mutateAsync, isPending } = useCreateTodo();
 
+    const { data: types = [] } = useGetTodoTypes();
+
+    const typeOptions = types.map(type => ({
+        label: type.name,
+        value: type.id,
+    }));
+
     const {
+        setValue,
         register,
         handleSubmit,
         control,
         formState: { errors, isSubmitting },
     } = useForm<CreateTodoFormData>({
-        resolver: zodResolver(CreateTodoSchema),
+        resolver: zodResolver(CreateTodoSchema) as Resolver<CreateTodoFormData>,
         defaultValues: {
             title: '',
             description: '',
             status: 'todo' as TodoStatus,
-            type: 'default' as TodoType,
+            type_id: 0,
             expired_at: '',
         },
     });
@@ -58,6 +61,12 @@ export const CreateTodo = () => {
 
         dispatch(closeModal());
     };
+
+    useEffect(() => {
+        if (types.length > 0) {
+            setValue('type_id', types[0].id);
+        }
+    }, [types, setValue]);
 
     return (
         <ModalCommonWrapper title="Create Todo">
@@ -76,7 +85,7 @@ export const CreateTodo = () => {
                     error={errors.description}
                 />
 
-                <CommonSelect label="Type" options={typeOptions} register={register('type')} />
+                <CommonSelect label="Type" options={typeOptions} register={register('type_id')} />
 
                 <CommonSelect
                     label="Status"
