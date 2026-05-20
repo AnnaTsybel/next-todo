@@ -46,7 +46,7 @@ export async function GET() {
         const { data, error } = await supabaseSrv
             .from('todo_types')
             .select('id, name, color, is_system, system_key')
-            .or(`user_id.eq.${userId},is_system.eq.true`);
+            .eq('user_id', userId);
 
         if (error) {
             throw new ApiError(ErrorMessages.COMMON.SERVER_ERROR, 500);
