@@ -6,7 +6,7 @@ import { ApiError, ErrorMessages, handleError } from '@lib/errors';
 import { supabaseSrv } from '@lib/supabase';
 import { UpdateTodoTypeSchema } from '@features/todo-types/validation';
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params;
         const userId = await getUserIdFromCookies();
@@ -28,7 +28,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         const { data: existing, error: fetchErr } = await supabaseSrv
             .from('todo_types')
             .select('*')
-            .eq('id', params.id)
+            .eq('id', id)
             .eq('user_id', userId)
             .maybeSingle();
 
@@ -65,7 +65,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     }
 }
 
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params;
         const userId = await getUserIdFromCookies();
